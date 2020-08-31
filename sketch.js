@@ -10,6 +10,7 @@ let animalGroups = [];
 let foreGroundmapTiles = [];
 let gameClock = 0;
 let muffArr = [];
+let musicOn = false;
 function preload() {
   grass = loadImage('assets/tiles/grass.png');
   dirt = loadImage('assets/tiles/dirt.png');
@@ -44,11 +45,16 @@ function setup() {
   resizeAssets();
   player = new player();
   inv = new inv();
+  song.pause();
 }
 
 function draw() {
+
+  if (!song.isPlaying()){
+    song.play();
+
+  }
   gameClock += 1;
-  startMusic()
   background(0);
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
@@ -159,7 +165,9 @@ console.log(mouseY);
 
 
 
+
 }
+
 function keyPressed() {
 
   if (keyCode ==65) {
@@ -198,9 +206,6 @@ muffArr = animalGroups[curMapRX][curMapRY][0];
 
 }
 
-function startMusic(){
-  if (gameClock == 100){
-      song.play();
-      console.log("hi");
-  }
+function touchStarted() {
+getAudioContext().resume()
 }
