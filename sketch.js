@@ -44,12 +44,11 @@ function setup() {
   resizeAssets();
   player = new player();
   inv = new inv();
-  song.play();
 }
 
 function draw() {
   gameClock += 1;
-  startMusic();
+  startMusic()
   background(0);
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
@@ -200,7 +199,8 @@ muffArr = animalGroups[curMapRX][curMapRY][0];
 }
 
 function startMusic(){
-  if (gameClock == 1){
+  if (gameClock == 100){
       song.play();
+      console.log("hi");
   }
 }
