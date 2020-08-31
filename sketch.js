@@ -49,7 +49,7 @@ function setup() {
 
 function draw() {
   gameClock += 1;
-
+  startMusic();
   background(0);
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
@@ -197,4 +197,10 @@ foreGroundmapTiles= mapGroups[curMapRX][curMapRY][1];
 muffArr = animalGroups[curMapRX][curMapRY][0];
 }
 
+}
+
+function startMusic(){
+  if (gameClock == 1){
+      song.play();
+  }
 }
