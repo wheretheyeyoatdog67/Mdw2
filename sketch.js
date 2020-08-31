@@ -49,7 +49,6 @@ function setup() {
 
 function draw() {
   gameClock += 1;
-  song.play();
    if (!song.isPlaying()) {
      song.play();
    }
@@ -86,7 +85,7 @@ function resizeAssets(){
   rock2.resize(50,50);
   bush.resize(50,50);
   muffloPic.resize(80,80);
-  playerPic.resize(150,50);
+  playerPic.resize(150,150);
   invPic.resize(205,500);
   woodPanel.resize(200,100);
 
