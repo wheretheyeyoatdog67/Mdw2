@@ -44,14 +44,12 @@ function setup() {
   resizeAssets();
   player = new player();
   inv = new inv();
-
+  song.play();
 }
 
 function draw() {
   gameClock += 1;
-   if (!song.isPlaying()) {
-     song.play();
-   }
+
   background(0);
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
@@ -85,7 +83,7 @@ function resizeAssets(){
   rock2.resize(50,50);
   bush.resize(50,50);
   muffloPic.resize(80,80);
-  playerPic.resize(150,150);
+  playerPic.resize(50,50);
   invPic.resize(205,500);
   woodPanel.resize(200,100);
 
