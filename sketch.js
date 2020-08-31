@@ -44,11 +44,12 @@ function setup() {
   resizeAssets();
   player = new player();
   inv = new inv();
-  song.play();
+
 }
 
 function draw() {
   gameClock += 1;
+  song.play();
    if (!song.isPlaying()) {
      song.play();
    }
