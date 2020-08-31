@@ -24,8 +24,8 @@ function preload() {
   woodPanel = loadImage('assets/wood.png');
   grass2 = loadImage('assets/tiles/grass2.png');
 
-
-
+  pickaxe1 = loadImage('assets/tools/pickaxe1.png');
+  axe1 = loadImage('assets/tools/axe.png');
   song = loadSound('assets/music/mainSong.mp3');
 }
 
@@ -45,6 +45,9 @@ function setup() {
   resizeAssets();
   player = new player();
   inv = new inv();
+  inv.invantItems();
+  tool = new tool(player);
+
   song.pause();
 }
 
@@ -54,6 +57,7 @@ function draw() {
     song.play();
 
   }
+
   gameClock += 1;
   background(0);
   for (let i = 0; i<14;i++){
@@ -72,7 +76,7 @@ function draw() {
   }
 
 
-
+tool.update(player);
 }
 
 function drawTile(tileType,tileX,tileY){
@@ -91,7 +95,8 @@ function resizeAssets(){
   playerPic.resize(50,50);
   invPic.resize(205,500);
   woodPanel.resize(200,100);
-
+  pickaxe1.resize(50,50);
+  axe1.resize(40,50);
 }
 
 function windowResized() {
@@ -169,7 +174,7 @@ console.log(mouseY);
 }
 
 function keyPressed() {
-
+//MOVEMENT WASD
   if (keyCode ==65) {
     if (player.x == 0){
     player.moveToNextRegion(-1,0)
@@ -203,6 +208,13 @@ mapTiles = mapGroups[curMapRX][curMapRY][0];
 foreGroundmapTiles= mapGroups[curMapRX][curMapRY][1];
 muffArr = animalGroups[curMapRX][curMapRY][0];
 }
+
+//invant
+if (keyCode >=49 && keyCode <=57) {
+  inv.curItem = keyCode - 48;
+}
+
+
 
 }
 
