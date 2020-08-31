@@ -54,6 +54,7 @@ highlightItem(){
   strokeWeight(4)
   stroke(255,223,0);
   rect(714,210+(this.curItem-1)*54,40,48);
+  noStroke();
   // noSt
 }
 

@@ -11,6 +11,15 @@ let foreGroundmapTiles = [];
 let gameClock = 0;
 let muffArr = [];
 let musicOn = false;
+let isAboveGround = true;
+let timeOfDay = 6;
+let timeDir = 1;
+let undergroundTiles = [];
+let undergroundGroups = [];
+let floorItemArr = [];
+
+
+
 function preload() {
   grass = loadImage('assets/tiles/grass.png');
   dirt = loadImage('assets/tiles/dirt.png');
@@ -18,13 +27,16 @@ function preload() {
   tree2 = loadImage('assets/tiles/tree2.png');
   rock = loadImage('assets/tiles/rock.png');
   rock2 = loadImage('assets/tiles/rock2.png');
+  logs = loadImage('assets/tiles/logs.png');
   bush = loadImage('assets/tiles/bush.png');
-  muffloPic = loadImage('assets/tiles/mufflo.png');
+  muffloPicR = loadImage('assets/tiles/mufflo.png');
+  muffloPicL = loadImage('assets/tiles/muffloL.png');
   playerPic = loadImage('assets/tiles/player.png');
   invPic = loadImage('assets/invant.png');
   woodPanel = loadImage('assets/wood.png');
   grass2 = loadImage('assets/tiles/grass2.png');
-
+  underGFloor = loadImage('assets/tiles/undergroundFloor.png');
+  underGRock = loadImage('assets/tiles/underGRock.png');
   pickaxe1 = loadImage('assets/tools/pickaxe1.png');
   axe1 = loadImage('assets/tools/axe.png');
   song = loadSound('assets/music/mainSong.mp3');
@@ -53,14 +65,12 @@ function setup() {
 }
 
 function draw() {
-
-  if (!song.isPlaying()){
-    song.play();
-
-  }
-
-  gameClock += 1;
   background(0);
+  timeOfDayCalc();
+  if (!song.isPlaying()){
+    song.play();}
+  gameClock += 1;
+
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
       drawTile(mapTiles[i][j],i,j);
@@ -69,15 +79,33 @@ function draw() {
         }
       }
   }
-  player.draw();
-  inv.drawInv();
+  //drawMufflo
   for (let i = 0; i < muffArr.length;i++){
     muffArr[i].draw();
     muffArr[i].move();
   }
+  for(let i = 0;i<floorItemArr.length;i++){
+    floorItemArr[i].disp();
+  }
+  player.draw();
+  inv.drawInv();
+
 
 
 tool.update(player);
+
+
+
+
+//CaveShade and Sun
+if(!isAboveGround){
+  fill(40,40,70,150);
+  rect(0,0,700,700);
+}
+else{
+//fill(207,181,59,10);
+fill(40+timeOfDay*16,40,255-timeOfDay*15,70-19*timeOfDay);
+rect(0,0,700,700);}
 }
 
 function drawTile(tileType,tileX,tileY){
@@ -93,12 +121,16 @@ function resizeAssets(){
   rock.resize(50,50);
   rock2.resize(50,50);
   bush.resize(50,50);
-  muffloPic.resize(80,80);
+  muffloPicR.resize(80,80);
+  muffloPicL.resize(80,80);
   playerPic.resize(50,50);
   invPic.resize(205,500);
   woodPanel.resize(200,100);
+  underGRock.resize(50,50);
+  underGFloor.resize(50,50);
   pickaxe1.resize(50,50);
   axe1.resize(40,50);
+  logs.resize(40,40);
 }
 
 function windowResized() {
@@ -110,8 +142,11 @@ function windowResized() {
 
 function spawnMap(){
 
+  //TEMPTEMP TEMP TEM PMTETMPEMPREMPRMEPRMERPEMR
+  floorItemArr = [];
+  //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   setupMapGrid();
-
+  if(isAboveGround == true){
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
     let r = random(-1,1);
@@ -135,6 +170,19 @@ function spawnMap(){
   }
   spawnAnimals();
 }
+else{
+  for (let i = 0; i<14;i++){
+    for (let j = 0; j<14;j++){
+        mapTiles[i][j] = underGFloor;
+        let l = caveNoise(i*j+1);
+        if (l < 45){
+          foreGroundmapTiles[i][j] = underGRock;
+        }
+      }
+    }
+  }
+
+}
 
 
 function setupMapGrid(){
@@ -150,12 +198,13 @@ function setupMapGroups(){
   for (let x = 0; x < 10; x++) {
        mapGroups[x] = [];
        animalGroups[x] = [];
+       undergroundGroups[x] = [];
    }
    for (let i = 0; i < 10; i++) {
      for (let j = 0; j < 10; j++) {
     mapGroups[i][j] = [];
     animalGroups[i][j] = [];
-
+    undergroundGroups[i][j] = [];
     }
   }
 
@@ -166,60 +215,27 @@ function spawnAnimals(){
   }
 }
 
-let temp = true;
-function mouseClicked() {
-console.log(mouseX);
-console.log(mouseY);
 
 
-
-
-
+function caveNoise(input){
+  let posState = noise(input*random(0,50))*100;
+  return posState;
 }
 
-function keyPressed() {
-//MOVEMENT WASD
-  if (keyCode ==65) {
-    if (player.x == 0){
-    player.moveToNextRegion(-1,0)
-  }else player.move(-1,0);
+
+
+
+
+function timeOfDayCalc(){
+  if (gameClock % 250 == 0){
+    if (timeOfDay > 12){
+      timeDir*=-1
+    }else if (timeOfDay < 0){
+      timeDir*=-1
+    }
+    timeOfDay += timeDir*1;
+
   }
-
-  if (keyCode ==68) {
-    if (player.x == 13){
-    player.moveToNextRegion(1,0)
-  }else player.move(1,0);
-
-}
-if (keyCode ==83) {
-  if (player.y == 13){
-  player.moveToNextRegion(0,1)
-}else player.move(0,1);
-}
-if (keyCode ==87) {
-  if (player.y == 0){
-  player.moveToNextRegion(0,-1)
-}else player.move(0,-1);
-}
-if(mapGroups[curMapRX][curMapRY][0] == undefined){
-spawnMap();
-//spawnMap()
-mapGroups[curMapRX][curMapRY][0] = mapTiles
-mapGroups[curMapRX][curMapRY][1] = foreGroundmapTiles;
-animalGroups[curMapRX][curMapRY][0] = muffArr;
-}else {
-mapTiles = mapGroups[curMapRX][curMapRY][0];
-foreGroundmapTiles= mapGroups[curMapRX][curMapRY][1];
-muffArr = animalGroups[curMapRX][curMapRY][0];
-}
-
-//invant
-if (keyCode >=49 && keyCode <=57) {
-  inv.curItem = keyCode - 48;
-}
-
-
-
 }
 
 function touchStarted() {

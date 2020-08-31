@@ -30,10 +30,54 @@ moveToNextRegion(xL,yL){
   }
 }
 
-playerCollision(){
+playerCollision(dir){
+  //Left
+  if(dir == 65){
+    if(foreGroundmapTiles[this.x-1][this.y]==undefined) return false;
+    else return true;
+  }
+  //Right
+  if(dir == 68){
+    if(foreGroundmapTiles[this.x+1][this.y]==undefined) return false;
+    else return true;
+  }
+  if(dir == 83){
+    if(foreGroundmapTiles[this.x][this.y+1]==undefined) return false;
+    else return true;
+  }
+  if(dir == 87){
+    if(foreGroundmapTiles[this.x][this.y-1]==undefined) return false;
+    else return true;
+  }
 
 }
-inhand(){
-  
+
+playerCutTree(xCoord,yCoord){
+  if(dist(this.x,this.y,xCoord,yCoord)==1){
+    if(inv.curItem ==2){
+      if(xCoord > this.x){
+        if(foreGroundmapTiles[this.x+1][this.y]==tree ||foreGroundmapTiles[this.x+1][this.y]==tree2){
+        foreGroundmapTiles[this.x+1][this.y] = undefined;
+        floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));
+      }
+      }
+      else if(xCoord < this.x){
+        if(foreGroundmapTiles[this.x-1][this.y]==tree ||foreGroundmapTiles[this.x-1][this.y]==tree2){
+        foreGroundmapTiles[this.x-1][this.y] = undefined;
+      floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord > this.y){
+        if(foreGroundmapTiles[this.x][this.y+1]==tree ||foreGroundmapTiles[this.x][this.y+1]==tree2){
+        foreGroundmapTiles[this.x][this.y+1] = undefined;
+      floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord < this.y){
+        if(foreGroundmapTiles[this.x][this.y-1]==tree ||foreGroundmapTiles[this.x][this.y-1]==tree2){
+        foreGroundmapTiles[this.x][this.y-1] = undefined;
+      floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));}
+      }
+
+    }
+  }
 }
 }
