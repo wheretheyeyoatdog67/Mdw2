@@ -15,6 +15,7 @@ function preload() {
   grass = loadImage('assets/tiles/grass.png');
   dirt = loadImage('assets/tiles/dirt.png');
   tree = loadImage('assets/tiles/tree.png');
+  tree2 = loadImage('assets/tiles/tree2.png');
   rock = loadImage('assets/tiles/rock.png');
   rock2 = loadImage('assets/tiles/rock2.png');
   bush = loadImage('assets/tiles/bush.png');
@@ -88,6 +89,7 @@ function resizeAssets(){
   grass2.resize(50,50);
   dirt.resize(50,50);
   tree.resize(50,50);
+  tree2.resize(50,50);
   rock.resize(50,50);
   rock2.resize(50,50);
   bush.resize(50,50);
@@ -119,7 +121,9 @@ function spawnMap(){
         tileType = grass2;
       }else tileType = grass;
     if (r>0 && r <.1)foreGroundmapTiles[i][j] = bush;
-    if (r>.2 && r < 1){foreGroundmapTiles[i][j] = tree;
+    if (r>.2 && r < 1){
+      if(r>=.2&&r<.6)foreGroundmapTiles[i][j] = tree;
+      if(r>.6 && r<.8)foreGroundmapTiles[i][j] = tree2;
     if (r>.9){
     if(r < .95)foreGroundmapTiles[i][j] = rock;
     else foreGroundmapTiles[i][j] = rock2;}
