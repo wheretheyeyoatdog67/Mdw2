@@ -44,6 +44,7 @@ function setup() {
   resizeAssets();
   player = new player();
   inv = new inv();
+  song.play();
 }
 
 function draw() {
