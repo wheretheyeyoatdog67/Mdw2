@@ -52,9 +52,16 @@ displayItems(){
         offsetX = 5;
         offsetY = 13;
       }
+      else if(this.invantArray[i] == berries){
+        offsetX = 4;
+        offsetY = 10;
+      }
+
       image(this.invantArray[i],710+offsetX,210+i*52+offsetY);
     }
+
   }
+  this.itemCount();
 }
 highlightItem(){
   noFill()
@@ -63,6 +70,23 @@ highlightItem(){
   rect(714,210+(this.curItem-1)*54,40,48);
   noStroke();
   // noSt
+}
+itemCount(){
+  textSize(20)
+  for(let i = 0;i<this.invantArray.length;i++){
+    if (invArrItemCount[i]<0){
+      console.log(i);
+      this.invantArray.splice(i,1);
+      invArrItemCount.splice(i,1);
+    }
+    if (invArrItemCount[i]!=0){
+      fill(255);
+      stroke(0);
+      text(invArrItemCount[i]+1,740,265+50*i);
+      noStroke();
+
+    }
+  }
 }
 
 

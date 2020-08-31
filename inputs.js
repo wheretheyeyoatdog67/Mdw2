@@ -80,5 +80,49 @@ if (keyCode >=49 && keyCode <=57) {
 function mouseClicked() {
 let xCoord = floor(mouseX/50);
 let yCoord = floor(mouseY/50);
-player.playerCutTree(xCoord,yCoord);
+spawnCabin(xCoord,yCoord);
+if(dist(xCoord,yCoord,player.x,player.y)==1){
+if(inv.invantArray[inv.curItem-1] == logs){
+  foreGroundmapTiles[xCoord][yCoord] = campfire;
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+else if(foreGroundmapTiles[xCoord][yCoord] == tree || foreGroundmapTiles[xCoord][yCoord] == tree2){
+  player.playerCutTree(xCoord,yCoord);
+}
+else if(foreGroundmapTiles[xCoord][yCoord] == tripShroom){
+  player.playerCutShroom(xCoord,yCoord);
+}
+else if(foreGroundmapTiles[xCoord][yCoord] == bbush){
+  foreGroundmapTiles[xCoord][yCoord] = bush;
+  player.pickUpNoGroundItem(berries,2);
+  //floorItemArr.push(new grounditems(berries,5,player.x,player.y,0,0));
+}
+
+
+}
+
+if(inv.invantArray[inv.curItem-1] == tripShroom){
+  mushRoomTrip = true;
+  tripClock = 0;
+  triplevel += 1;
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+
+}
+
+function mouseWheel(event) {
+  console.log(event.delta)
+  if(event.delta < 0){
+    if(inv.curItem == 1){
+      inv.curItem = 1;
+    }
+    else inv.curItem -= 1;
+  }
+  else {
+    if(inv.curItem == 9){
+      inv.curItem = 9;
+    }
+    else inv.curItem += 1};
+
+
 }

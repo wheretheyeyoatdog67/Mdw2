@@ -82,13 +82,63 @@ playerCutTree(xCoord,yCoord){
     }
   }
 }
+
+pickUpNoGroundItem(typePic,quantity){
+  for(let j = 2;j<9;j++){
+    if (inv.invantArray[j] == typePic){
+    invArrItemCount[j] += quantity;
+    return 0;}
+  }
+  inv.invantArray.push(typePic);
+  return 0;
+}
+
+
+
 pickUp(){
   for(let i = 0;i<floorItemArr.length;i++){
   if(this.x == floorItemArr[i].x && this.y == floorItemArr[i].y){
+    for(let j = 2;j<9;j++){
+      if (inv.invantArray[j] == floorItemArr[i].type){
+      invArrItemCount[j] += 1;
+      floorItemArr.splice(i,1);
+      return 0;}
+    }
     inv.invantArray.push(floorItemArr[i].type);
     floorItemArr.splice(i,1);
     return 0;
   }
 }
 }
+
+playerCutShroom(xCoord,yCoord){
+    console.log("HI")
+      if(xCoord > this.x){
+        if(foreGroundmapTiles[this.x+1][this.y]==tripShroom){
+        foreGroundmapTiles[this.x+1][this.y] = undefined;
+        floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+
+      }
+      else if(xCoord < this.x){
+        if(foreGroundmapTiles[this.x-1][this.y]==tripShroom){
+        foreGroundmapTiles[this.x-1][this.y] = undefined;
+      floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord > this.y){
+        if(foreGroundmapTiles[this.x][this.y+1]==tripShroom){
+        foreGroundmapTiles[this.x][this.y+1] = undefined;
+      floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord < this.y){
+        if(foreGroundmapTiles[this.x][this.y-1]==tripShroom){
+        foreGroundmapTiles[this.x][this.y-1] = undefined;
+      floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+      }
+
+
+}
+
+
+
+
 }

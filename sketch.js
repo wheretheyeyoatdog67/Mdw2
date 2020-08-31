@@ -17,7 +17,12 @@ let timeDir = 1;
 let undergroundTiles = [];
 let undergroundGroups = [];
 let floorItemArr = [];
-
+let invArrItemCount = [];
+let mushRoomTrip = false;
+var inc = 0;
+var incDir = 1;
+let tripClock = 0;
+let triplevel = 0;
 
 
 function preload() {
@@ -28,7 +33,9 @@ function preload() {
   rock = loadImage('assets/tiles/rock.png');
   rock2 = loadImage('assets/tiles/rock2.png');
   logs = loadImage('assets/tiles/logs.png');
-  bush = loadImage('assets/tiles/bush.png');
+  bush = loadImage('assets/tiles/ebush.png');
+  berries = loadImage('assets/tiles/berries.png');
+  bbush = loadImage('assets/tiles/berrybush.png');
   muffloPicR = loadImage('assets/tiles/mufflo.png');
   muffloPicL = loadImage('assets/tiles/muffloL.png');
   playerPic = loadImage('assets/tiles/player.png');
@@ -38,7 +45,12 @@ function preload() {
   underGFloor = loadImage('assets/tiles/undergroundFloor.png');
   underGRock = loadImage('assets/tiles/underGRock.png');
   pickaxe1 = loadImage('assets/tools/pickaxe1.png');
-  axe1 = loadImage('assets/tools/axe.png');
+  campfire = loadImage('assets/campfire.png');
+  tripShroom = loadImage('assets/tiles/mushroom.png');
+
+  cabin = loadImage('assets/tiles/cabin.png');
+  transparent = loadImage('assets/tiles/transparent.png');
+  axe1 = loadImage('assets/tools/axe1.png');
   song = loadSound('assets/music/mainSong.mp3');
 }
 
@@ -60,7 +72,7 @@ function setup() {
   inv = new inv();
   inv.invantItems();
   tool = new tool(player);
-
+  fillInvCountZero();
   song.pause();
 }
 
@@ -70,14 +82,24 @@ function draw() {
   if (!song.isPlaying()){
     song.play();}
   gameClock += 1;
-
+  let cabinPosI = [];
+  let cabinPosJ = [];
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
       drawTile(mapTiles[i][j],i,j);
-      if (foreGroundmapTiles[i][j] != undefined){
-        drawTile(foreGroundmapTiles[i][j],i,j)
+      let curT = foreGroundmapTiles[i][j];
+      if (curT != undefined){
+        if(curT == cabin){
+          cabinPosI.push(i);
+          cabinPosJ.push(j);
+        }
+        else drawTile(foreGroundmapTiles[i][j],i,j)
         }
       }
+  }
+  console.log(cabinPosI)
+  for (let i = 0; i<cabinPosI.length;i++){
+    drawTile(foreGroundmapTiles[cabinPosI[i]][cabinPosJ[i]],cabinPosI[i],cabinPosJ[i])
   }
   //drawMufflo
   for (let i = 0; i < muffArr.length;i++){
@@ -89,10 +111,7 @@ function draw() {
   }
   player.draw();
   inv.drawInv();
-
-
-
-tool.update(player);
+  tool.update(player);
 
 
 
@@ -105,7 +124,63 @@ if(!isAboveGround){
 else{
 //fill(207,181,59,10);
 fill(40+timeOfDay*16,40,255-timeOfDay*15,70-19*timeOfDay);
-rect(0,0,700,700);}
+rect(0,0,700,700);
+
+
+for(let i = 0;i<14;i++){
+  for(let j = 0;j<14;j++){
+    let curTile = foreGroundmapTiles[i][j];
+    if ( curTile == campfire){
+      campfireLight(i,j);
+    }
+    else if ( curTile == bush){
+      if (random(0,100) > 99.6){
+        foreGroundmapTiles[i][j] = bbush;
+      }
+    }
+    // if(isAboveGround){
+    //   if(tileType == bush){
+    //     if (random(0,50) > 40){
+    //
+    //     }
+    //   }
+    // }
+
+
+    if(mushRoomTrip == true){
+      colorMode(HSB);
+      if (gameClock%1==0){
+      inc += incDir;
+    }
+      if(inc>100||inc<0 ){
+        incDir = incDir*-1;
+
+      }
+      if(tripClock == 500){
+        mushRoomTrip = false;
+        tripClock = 0;
+        triplevel = 0;
+      }
+      fill((tan((j)/(i+13))*170)+inc,255,150,.3+triplevel/10);
+      rect(50*i,50*j,50,50);
+      noFill();
+      colorMode(RGB);
+
+
+    }
+
+    }
+//fill(j*i+inc+random(0,20),10,100,.5);
+//rect(50*i,50*j,50,50); cloud texture
+  }
+if(mushRoomTrip == true){
+  tripClock += 1;
+}
+}
+
+
+
+
 }
 
 function drawTile(tileType,tileX,tileY){
@@ -121,6 +196,8 @@ function resizeAssets(){
   rock.resize(50,50);
   rock2.resize(50,50);
   bush.resize(50,50);
+  bbush.resize(50,50);
+  berries.resize(40,40);
   muffloPicR.resize(80,80);
   muffloPicL.resize(80,80);
   playerPic.resize(50,50);
@@ -129,8 +206,11 @@ function resizeAssets(){
   underGRock.resize(50,50);
   underGFloor.resize(50,50);
   pickaxe1.resize(50,50);
-  axe1.resize(40,50);
+  axe1.resize(50,50);
   logs.resize(40,40);
+  campfire.resize(50,50);
+  tripShroom.resize(50,50);
+  cabin.resize(100,100);
 }
 
 function windowResized() {
@@ -138,7 +218,11 @@ function windowResized() {
 }
 
 
-
+function fillInvCountZero(){
+  for (let i = 0; i<9;i++){
+    invArrItemCount[i] = 0;
+  }
+}
 
 function spawnMap(){
 
@@ -155,10 +239,16 @@ function spawnMap(){
       if (r<-.3){
         tileType = grass2;
       }else tileType = grass;
-    if (r>0 && r <.1)foreGroundmapTiles[i][j] = bush;
+    if (r>0 && r <.1)foreGroundmapTiles[i][j] = bbush;
     if (r>.2 && r < 1){
       if(r>=.2&&r<.6)foreGroundmapTiles[i][j] = tree;
-      if(r>.6 && r<.8)foreGroundmapTiles[i][j] = tree2;
+      if(r>.6 && r<.8){
+        if(r>.75){
+          foreGroundmapTiles[i][j] = tripShroom;
+        }
+        else foreGroundmapTiles[i][j] = tree2;
+      }
+
     if (r>.9){
     if(r < .95)foreGroundmapTiles[i][j] = rock;
     else foreGroundmapTiles[i][j] = rock2;}
@@ -166,11 +256,28 @@ function spawnMap(){
 }if(r < -.8) tileType = dirt;
     mapTiles[i][j] = tileType;
 
+    //RANDOM Cabins
+
+
+
     }
   }
+
+  for (let i = 0; i<14;i++){
+    for (let j = 0; j<14;j++){
+  if(foreGroundmapTiles[i][j] == undefined){
+    if(foreGroundmapTiles[i+1][j] == undefined){
+      if(foreGroundmapTiles[i][j+1] == undefined){
+        if(foreGroundmapTiles[i+1][j+1] == undefined){
+          if(random(0,5)>4.7){
+            spawnCabin(i,j);
+          }
+        }}}}}}
   spawnAnimals();
+
 }
 else{
+  //underground
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
         mapTiles[i][j] = underGFloor;
@@ -222,9 +329,31 @@ function caveNoise(input){
   return posState;
 }
 
+function campfireLight(x,y){
+  noStroke();
+  fill(255,255,0,20+ gameClock%10);
+  rect(x*50,y*50,50,50);
+  rect((x-1)*50,y*50,50,50);
+  rect((x+1)*50,y*50,50,50);
+  rect(x*50,(y-1)*50,50,50);
+  rect(x*50,(y+1)*50,50,50);
+}
 
+function spawnCabin(x,y){
 
-
+  if(foreGroundmapTiles[x][y] == undefined){
+    if(foreGroundmapTiles[x+1][y] == undefined){
+      if(foreGroundmapTiles[x][y+1] == undefined){
+        if(foreGroundmapTiles[x+1][y+1] == undefined){
+          foreGroundmapTiles[x][y] = cabin;
+          foreGroundmapTiles[x+1][y] = transparent;
+          foreGroundmapTiles[x][y+1] = transparent;
+          foreGroundmapTiles[x+1][y+1] = transparent;
+        }
+      }
+    }
+  }
+}
 
 function timeOfDayCalc(){
   if (gameClock % 250 == 0){
