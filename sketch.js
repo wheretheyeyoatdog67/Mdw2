@@ -23,10 +23,15 @@ function preload() {
   woodPanel = loadImage('assets/wood.png');
   grass2 = loadImage('assets/tiles/grass2.png');
 
+
+
+  song = loadSound('assets/music/mainSong.mp3');
 }
 
 
 function setup() {
+
+
   var cnv =createCanvas(width, height);
   cnv.style('display', 'block');
   background(70, 70, 90);
@@ -43,6 +48,9 @@ function setup() {
 
 function draw() {
   gameClock += 1;
+   if (!song.isPlaying()) {
+     song.play();
+   }
   background(0);
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
