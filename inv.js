@@ -41,11 +41,18 @@ drawInv(){
 invantItems(){
   this.invantArray[0] = pickaxe1;
   this.invantArray[1] = axe1;
+
 }
 displayItems(){
   for (let i = 0; i < this.invantArray.length;i++){
     if(this.invantArray[i]!=undefined){
-      image(this.invantArray[i],710,210+i*52);
+      let offsetX = 0;
+      let offsetY = 0;
+      if(this.invantArray[i] == logs){
+        offsetX = 5;
+        offsetY = 13;
+      }
+      image(this.invantArray[i],710+offsetX,210+i*52+offsetY);
     }
   }
 }

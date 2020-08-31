@@ -9,11 +9,12 @@ function keyPressed() {
 //MOVEMENT WASD
   if (keyCode ==65) {
     if (!player.playerCollision(65)){
+
       if (player.x == 0){
       player.moveToNextRegion(-1,0)
       }
       else player.move(-1,0);
-    }
+   }
   }
 
   if (keyCode ==68) {

@@ -85,7 +85,7 @@ function draw() {
     muffArr[i].move();
   }
   for(let i = 0;i<floorItemArr.length;i++){
-    floorItemArr[i].disp();
+    floorItemArr[i].update();
   }
   player.draw();
   inv.drawInv();

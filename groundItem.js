@@ -12,4 +12,8 @@ class grounditems{
     image(this.type,this.x*50+this.offsetx,this.y*50+this.offsety);
   }
 
+  update(){
+    this.disp();
+  }
+
 }

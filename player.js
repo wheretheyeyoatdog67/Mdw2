@@ -11,6 +11,7 @@ draw(){
 move(x,y){
   this.x += x;
   this.y += y;
+  this.pickUp();
 }
 moveToNextRegion(xL,yL){
   curMapRX = curMapRX + xL;
@@ -33,6 +34,7 @@ moveToNextRegion(xL,yL){
 playerCollision(dir){
   //Left
   if(dir == 65){
+    if(this.x == 0)return false
     if(foreGroundmapTiles[this.x-1][this.y]==undefined) return false;
     else return true;
   }
@@ -79,5 +81,14 @@ playerCutTree(xCoord,yCoord){
 
     }
   }
+}
+pickUp(){
+  for(let i = 0;i<floorItemArr.length;i++){
+  if(this.x == floorItemArr[i].x && this.y == floorItemArr[i].y){
+    inv.invantArray.push(floorItemArr[i].type);
+    floorItemArr.splice(i,1);
+    return 0;
+  }
+}
 }
 }
