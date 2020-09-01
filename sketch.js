@@ -6,6 +6,7 @@ let curMapRX = 2;
 let curMapRY = 2;
 let mapGroups = [];
 let mapTiles = [];
+let midGroundTiles = [];
 let animalGroups = [];
 let foreGroundmapTiles = [];
 let gameClock = 0;
@@ -45,6 +46,7 @@ function preload() {
   cactus3 = loadImage('assets/tiles/desert/cactus3.png');
   berries = loadImage('assets/tiles/berries.png');
   bbush = loadImage('assets/tiles/berrybush.png');
+  grassMid = loadImage('assets/tiles/grassMid.png');
   //Animals
   muffloPicR = loadImage('assets/tiles/mufflo.png');
   muffloPicL = loadImage('assets/tiles/muffloL.png');
@@ -99,7 +101,10 @@ function setup() {
   spawnMap();
   mapGroups[2][2][0] = mapTiles;
   mapGroups[2][2][1] = foreGroundmapTiles;
+  mapGroups[2][2][2] = midGroundTiles;
   animalGroups[2][2][0] = muffArr;
+
+
 
   inv.invantItems();
 
@@ -122,12 +127,14 @@ function draw() {
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
       drawTile(mapTiles[i][j],i,j);
+      if(midGroundTiles[i][j]!=undefined)drawTile(midGroundTiles[i][j],i,j);
       let curT = foreGroundmapTiles[i][j];
       if (curT != undefined){
         if(curT == cabin){
           cabinPosI.push(i);
           cabinPosJ.push(j);
         }
+
         else drawTile(foreGroundmapTiles[i][j],i,j)
         }
       }
@@ -237,6 +244,7 @@ if(craft.isCraft == true){
 
 function drawTile(tileType,tileX,tileY){
   //background(70, 70, 90);
+
   image(tileType,50*tileX,50*tileY);
 }
 function resizeAssets(){
@@ -284,6 +292,7 @@ function resizeAssets(){
   shells3.resize(30,30);
   shells4.resize(30,30);
   cobbleroad.resize(50,50);
+  grassMid.resize(40,40);
 }
 
 function windowResized() {
@@ -305,9 +314,11 @@ function spawnMap(){
   if(isAboveGround == true){
     //CreateWoodlandsBiome();
     let m = (random(0,100));
-    if (m <= 60)CreateWoodlandsBiome()
-    else if (m <= 80 )CreateLakeBiome()
-    else CreateDesertBiome()
+    if (m <= 60)CreateWoodlandsBiome();
+    else if (m <= 80 )CreateLakeBiome();
+    else CreateDesertBiome();
+
+
 
 
 }
@@ -326,13 +337,16 @@ else{
 
 }
 
+//midGroundGroups = [];
 
 function setupMapGrid(){
   mapTiles = [];
+  midGroundTiles = [];
   foreGroundmapTiles = [];
   muffArr = [];
   for (let x = 0; x < 15; x++) {
     mapTiles[x] = [];
+    midGroundTiles[x] = [];
     foreGroundmapTiles[x] = [];
   }
 }
@@ -403,8 +417,21 @@ function spawnCabin(x,y){
 function CreateWoodlandsBiome(){
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
+
+
+
+
     let r = random(-1,1);
+    if(r > -.5 && r < -.3){
+    midGroundTiles[i][j]=grassMid;
+    }
     let tileType;
+
+
+
+
+
+
     if (r>-.8){
       if (r<-.3){
         tileType = grass2;
@@ -413,8 +440,9 @@ function CreateWoodlandsBiome(){
     if (r>.2 && r < 1){
       if(r>=.2&&r<.6)foreGroundmapTiles[i][j] = tree;
       if(r>.6 && r<.8){
-        if(r>.75){
+        if(r>.79){
           foreGroundmapTiles[i][j] = tripShroom;
+
         }
         else foreGroundmapTiles[i][j] = tree2;
       }
@@ -432,6 +460,7 @@ function CreateWoodlandsBiome(){
 function CreateDesertBiome(){
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
+      //midGroundTiles[i][j] = grassMid;
     let r = random(0,100);
     let tileType;
       if (r>=0){
@@ -457,6 +486,7 @@ function CreateLakeBiome(){
   let randomY = random(4,10);
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
+      //midGroundTiles[i][j] = grassMid;
     let r = random(0,100);
     let tileType;
       if (r>=0){
@@ -467,15 +497,15 @@ function CreateLakeBiome(){
         else if (dist(i,j,randomX,randomY)>=4+floor(random(-1,1))){
           tileType = sand1;
           if(r<10){
-            foreGroundmapTiles[i][j] = shells1;
+            midGroundTiles[i][j] = shells1;
           }
           else if (r<15){
-            foreGroundmapTiles[i][j] = shells2;
+            midGroundTiles[i][j] = shells2;
           }else if (r<20){
-            foreGroundmapTiles[i][j] = shells3;
+            midGroundTiles[i][j] = shells3;
           }
           else if (r<25){
-            foreGroundmapTiles[i][j] = shells4;
+            midGroundTiles[i][j] = shells4;
           }
         }
         else tileType = water1;

@@ -33,6 +33,7 @@ move(x,y){
 
 }
 moveToNextRegion(xL,yL){
+  floorItemArr = [];
   curMapRX = curMapRX + xL;
   curMapRY = curMapRY + yL;
   if (xL < 0){

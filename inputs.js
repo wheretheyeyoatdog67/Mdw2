@@ -15,7 +15,7 @@ function keyPressed() {
       player.moveToNextRegion(-1,0)
       }
       else player.move(-1,0);
-      player.hungerVal -=2;
+      player.hungerVal -=1;
    }
   }
 
@@ -25,7 +25,7 @@ function keyPressed() {
         player.moveToNextRegion(1,0)
         }
         else player.move(1,0);
-        player.hungerVal -=2;
+        player.hungerVal -=1;
       }
     }
   if (keyCode ==83) {
@@ -34,7 +34,7 @@ function keyPressed() {
         player.moveToNextRegion(0,1)
       }
       else player.move(0,1);
-      player.hungerVal -=2;
+      player.hungerVal -=1;
     }
   }
   if (keyCode ==87) {
@@ -43,7 +43,7 @@ function keyPressed() {
         player.moveToNextRegion(0,-1)
         }
         else player.move(0,-1);
-        player.hungerVal -=2;
+        player.hungerVal -=1;
     }
   }
 if (keyCode ==67) {
@@ -73,20 +73,24 @@ spawnMap();
 //spawnMap()
 mapGroups[curMapRX][curMapRY][0] = mapTiles
 mapGroups[curMapRX][curMapRY][1] = foreGroundmapTiles;
+mapGroups[curMapRX][curMapRY][2] = midGroundTiles;
 animalGroups[curMapRX][curMapRY][0] = muffArr;
 }else {
 mapTiles = mapGroups[curMapRX][curMapRY][0];
 foreGroundmapTiles= mapGroups[curMapRX][curMapRY][1];
+midGroundTiles = mapGroups[curMapRX][curMapRY][2];
 muffArr = animalGroups[curMapRX][curMapRY][0];
 }}
 else {
   if(undergroundGroups[curMapRX][curMapRY][0] == undefined){
   spawnMap();
   undergroundGroups[curMapRX][curMapRY][0] = mapTiles
-  undergroundGroups[curMapRX][curMapRY][1] = foreGroundmapTiles;}
+  undergroundGroups[curMapRX][curMapRY][1] = foreGroundmapTiles;
+  undergroundGroups[curMapRX][curMapRY][2] = midGroundTiles;}
   else {
   mapTiles = undergroundGroups[curMapRX][curMapRY][0];
   foreGroundmapTiles= undergroundGroups[curMapRX][curMapRY][1];
+  midGroundTiles= undergroundGroups[curMapRX][curMapRY][2];
   muffArr = [];
   }
 
