@@ -46,7 +46,8 @@ invantItems(){
   this.invantArray[0] = pickaxe1;
   this.invantArray[1] = shovel;
   this.invantArray[2] = axe1;
-  this.invantArray[3] = wand;
+  this.invantArray[3] = wandInv;
+  this.invantArray[4] = tomb;
 
 
 }
@@ -58,6 +59,10 @@ displayItems(){
       if(this.invantArray[i] == logs){
         offsetX = 2;
         offsetY = 13;
+      }
+      else if(this.invantArray[i] == tomb){
+        offsetY = 9;
+
       }
       else if(this.invantArray[i] == berries){
         offsetX = 4;
@@ -101,9 +106,11 @@ highlightItem(){
   noFill()
   strokeWeight(4)
   stroke(255,223,0);
+  if(this.curItem-1 <9){
   rect(714,210+(this.curItem-1)*54,40,48);
+}else rect(768,-275+(this.curItem-1)*54,40,48);
   noStroke();
-  // noSt
+
 }
 itemCount(){
   textSize(20)

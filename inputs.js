@@ -47,6 +47,13 @@ if (keyCode ==67) {
     craft.isCraft = false;
   }else craft.isCraft = true;
 }
+if (keyCode ==81) {
+  if(tool.isSheifed==false)
+  tool.isSheifed = true;
+  else {
+    tool.isSheifed = false;
+  }
+}
 
 
 if(isAboveGround == true){
@@ -186,8 +193,8 @@ function mouseWheel(event) {
     else inv.curItem -= 1;
   }
   else {
-    if(inv.curItem == 9){
-      inv.curItem = 9;
+    if(inv.curItem == 18){
+      inv.curItem = 18;
     }
     else inv.curItem += 1};
 

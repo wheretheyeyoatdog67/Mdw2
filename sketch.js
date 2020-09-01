@@ -48,9 +48,10 @@ function preload() {
   underGRock = loadImage('assets/tiles/underGRock.png');
   pickaxe1 = loadImage('assets/tools/pickaxe1.png');
   wand = loadImage('assets/tools/wand.png');
+  wandInv = loadImage('assets/tools/wandInv.png');
   campfire = loadImage('assets/campfire.png');
   tripShroom = loadImage('assets/tiles/mushroom.png');
-
+  tomb = loadImage('assets/tools/tomb.png');
   cabin = loadImage('assets/tiles/cabin.png');
   cabinInv = loadImage('assets/tiles/cabin.png');
   transparent = loadImage('assets/tiles/transparent.png');
@@ -236,10 +237,12 @@ function resizeAssets(){
   tripShroom.resize(50,50);
   cabin.resize(100,100);
   wand.resize(55,60);
+  wandInv.resize(60,60);
   dirtInv.resize(50,50);
   dirtHole.resize(50,50);
   cabinInv.resize(50,50);
   chain.resize(100,150);
+  tomb.resize(50,50);
 }
 
 function windowResized() {
