@@ -39,12 +39,18 @@ class tool{
 
 
     rotate(rotFact);}
-    if(inv.curItem==1){
-      image(pickaxe1,-15,-30);
+    if(inv.invantArray[inv.curItem-1]!= undefined){
+      image(inv.invantArray[inv.curItem-1],-15,-30);
     }
-    if(inv.curItem==2){
-      image(axe1,-15,-30);
-    }
+    // if(inv.curItem==1){
+    //   image(pickaxe1,-15,-30);
+    // }
+    // if(inv.curItem==2){
+    //   image(axe1,-15,-30);
+    // }
+    // if(inv.curItem==3){
+    //   image(wand,-15,-30);
+    // }
 
     pop();
 

@@ -2,16 +2,24 @@ class player{
   constructor(){
     this.x = 4;
     this.y = 4;
+    this.hungerVal = 480;
 
   }
 
 draw(){
+  this.hunger();
   image(playerPic,this.x*50,this.y*50);
+}
+hunger(){
+  if(gameClock%360==0){
+    this.hungerVal -=5;
+  }
 }
 move(x,y){
   this.x += x;
   this.y += y;
   this.pickUp();
+
 }
 moveToNextRegion(xL,yL){
   curMapRX = curMapRX + xL;

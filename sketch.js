@@ -45,6 +45,7 @@ function preload() {
   underGFloor = loadImage('assets/tiles/undergroundFloor.png');
   underGRock = loadImage('assets/tiles/underGRock.png');
   pickaxe1 = loadImage('assets/tools/pickaxe1.png');
+  wand = loadImage('assets/tools/wand.png');
   campfire = loadImage('assets/campfire.png');
   tripShroom = loadImage('assets/tiles/mushroom.png');
 
@@ -97,7 +98,7 @@ function draw() {
         }
       }
   }
-  console.log(cabinPosI)
+
   for (let i = 0; i<cabinPosI.length;i++){
     drawTile(foreGroundmapTiles[cabinPosI[i]][cabinPosJ[i]],cabinPosI[i],cabinPosJ[i])
   }
@@ -123,8 +124,14 @@ if(!isAboveGround){
 }
 else{
 //fill(207,181,59,10);
-fill(40+timeOfDay*16,40,255-timeOfDay*15,70-19*timeOfDay);
-rect(0,0,700,700);
+
+if(timeOfDay < 6){
+  colorMode(HSB);
+  fill(0,0,0,.1+(6-timeOfDay)/12);
+  rect(0,0,700,700);
+  colorMode(RGB);}
+}
+
 
 
 for(let i = 0;i<14;i++){
@@ -149,7 +156,7 @@ for(let i = 0;i<14;i++){
 
     if(mushRoomTrip == true){
       colorMode(HSB);
-      if (gameClock%1==0){
+      if (gameClock%.5==0){
       inc += incDir;
     }
       if(inc>100||inc<0 ){
@@ -181,7 +188,7 @@ if(mushRoomTrip == true){
 
 
 
-}
+
 
 function drawTile(tileType,tileX,tileY){
   //background(70, 70, 90);
@@ -211,6 +218,7 @@ function resizeAssets(){
   campfire.resize(50,50);
   tripShroom.resize(50,50);
   cabin.resize(100,100);
+  wand.resize(55,60);
 }
 
 function windowResized() {
@@ -263,8 +271,9 @@ function spawnMap(){
     }
   }
 
-  for (let i = 0; i<14;i++){
-    for (let j = 0; j<14;j++){
+  for (let i = 1; i<13;i++){
+    for (let j = 1; j<13;j++){
+
   if(foreGroundmapTiles[i][j] == undefined){
     if(foreGroundmapTiles[i+1][j] == undefined){
       if(foreGroundmapTiles[i][j+1] == undefined){
@@ -356,7 +365,7 @@ function spawnCabin(x,y){
 }
 
 function timeOfDayCalc(){
-  if (gameClock % 250 == 0){
+  if (gameClock % 100 == 0){
     if (timeOfDay > 12){
       timeDir*=-1
     }else if (timeOfDay < 0){

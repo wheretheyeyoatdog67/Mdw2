@@ -80,7 +80,7 @@ if (keyCode >=49 && keyCode <=57) {
 function mouseClicked() {
 let xCoord = floor(mouseX/50);
 let yCoord = floor(mouseY/50);
-spawnCabin(xCoord,yCoord);
+//spawnCabin(xCoord,yCoord);
 if(dist(xCoord,yCoord,player.x,player.y)==1){
 if(inv.invantArray[inv.curItem-1] == logs){
   foreGroundmapTiles[xCoord][yCoord] = campfire;
@@ -105,9 +105,14 @@ if(inv.invantArray[inv.curItem-1] == tripShroom){
   mushRoomTrip = true;
   tripClock = 0;
   triplevel += 1;
+  player.hungerVal -= 15;
   invArrItemCount[inv.curItem-1] -= 1;
 }
-
+if(inv.invantArray[inv.curItem-1] == berries){
+  player.hungerVal += 15;
+  if( player.hungerVal>480)player.hungerVal = 480;
+  invArrItemCount[inv.curItem-1] -= 1;
+}
 }
 
 function mouseWheel(event) {

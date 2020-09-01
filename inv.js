@@ -32,8 +32,12 @@ drawInv(){
   //MANA
   strokeWeight(2);
   stroke(0);
-  fill(100,10,200);
-  rect (814,210,37,480);
+
+  fill(60,50,100);
+  rect (814,690,37,-480);
+  fill(70,180,30);
+  rect (814,690,37,-player.hungerVal);
+
   this.highlightItem()
   this.displayItems();
 
@@ -41,6 +45,8 @@ drawInv(){
 invantItems(){
   this.invantArray[0] = pickaxe1;
   this.invantArray[1] = axe1;
+  this.invantArray[2] = wand;
+
 
 }
 displayItems(){
