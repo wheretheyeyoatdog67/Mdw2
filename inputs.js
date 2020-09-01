@@ -15,6 +15,7 @@ function keyPressed() {
       player.moveToNextRegion(-1,0)
       }
       else player.move(-1,0);
+      player.hungerVal -=2;
    }
   }
 
@@ -24,6 +25,7 @@ function keyPressed() {
         player.moveToNextRegion(1,0)
         }
         else player.move(1,0);
+        player.hungerVal -=2;
       }
     }
   if (keyCode ==83) {
@@ -32,6 +34,7 @@ function keyPressed() {
         player.moveToNextRegion(0,1)
       }
       else player.move(0,1);
+      player.hungerVal -=2;
     }
   }
   if (keyCode ==87) {
@@ -40,6 +43,7 @@ function keyPressed() {
         player.moveToNextRegion(0,-1)
         }
         else player.move(0,-1);
+        player.hungerVal -=2;
     }
   }
 if (keyCode ==67) {
