@@ -64,7 +64,7 @@ playerCollision(dir){
 
 playerCutTree(xCoord,yCoord){
   if(dist(this.x,this.y,xCoord,yCoord)==1){
-    if(inv.curItem ==2){
+    if(inv.curItem ==3){
       if(xCoord > this.x){
         if(foreGroundmapTiles[this.x+1][this.y]==tree ||foreGroundmapTiles[this.x+1][this.y]==tree2){
         foreGroundmapTiles[this.x+1][this.y] = undefined;
@@ -90,6 +90,108 @@ playerCutTree(xCoord,yCoord){
     }
   }
 }
+
+playerMineRock(xCoord,yCoord){
+
+    if(inv.curItem ==1){
+
+      if(xCoord > this.x){
+        if(foreGroundmapTiles[this.x+1][this.y]==rock ||foreGroundmapTiles[this.x+1][this.y]==rock2){
+        foreGroundmapTiles[this.x+1][this.y] = undefined;
+        floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));
+      }
+      }
+      else if(xCoord < this.x){
+        if(foreGroundmapTiles[this.x-1][this.y]==rock ||foreGroundmapTiles[this.x-1][this.y]==rock2){
+        foreGroundmapTiles[this.x-1][this.y] = undefined;
+      floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord > this.y){
+        if(foreGroundmapTiles[this.x][this.y+1]==rock ||foreGroundmapTiles[this.x][this.y+1]==rock2){
+        foreGroundmapTiles[this.x][this.y+1] = undefined;
+      floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord < this.y){
+        if(foreGroundmapTiles[this.x][this.y-1]==rock ||foreGroundmapTiles[this.x][this.y-1]==rock2){
+        foreGroundmapTiles[this.x][this.y-1] = undefined;
+      floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));}
+      }
+
+    }
+
+}
+playerDigBush(xCoord,yCoord){
+
+    if(inv.curItem ==2){
+      if(xCoord > this.x){
+        if(foreGroundmapTiles[this.x+1][this.y]==bush){
+        foreGroundmapTiles[this.x+1][this.y] = undefined;
+        floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));
+      }
+      }
+      else if(xCoord < this.x){
+        if(foreGroundmapTiles[this.x-1][this.y]==bush){
+        foreGroundmapTiles[this.x-1][this.y] = undefined;
+      floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord > this.y){
+        if(foreGroundmapTiles[this.x][this.y+1]==bush){
+        foreGroundmapTiles[this.x][this.y+1] = undefined;
+      floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord < this.y){
+        if(foreGroundmapTiles[this.x][this.y-1]==bush){
+        foreGroundmapTiles[this.x][this.y-1] = undefined;
+      floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));}
+      }
+
+    }
+
+}
+playerDigDirt(xCoord,yCoord){
+
+    if(inv.curItem ==2){
+      if(xCoord > this.x){
+        if(mapTiles[this.x+1][this.y]==dirt){
+        mapTiles[this.x+1][this.y] = dirtHole;
+        floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));
+      }
+      }
+      else if(xCoord < this.x){
+        if(mapTiles[this.x-1][this.y]==dirt){
+        mapTiles[this.x-1][this.y] = dirtHole;
+      floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord > this.y){
+        if(mapTiles[this.x][this.y+1]==dirt){
+        mapTiles[this.x][this.y+1] = dirtHole;
+      floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));}
+      }
+      else if(yCoord < this.y){
+        if(mapTiles[this.x][this.y-1]==dirt){
+        mapTiles[this.x][this.y-1] = dirtHole;
+      floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));}
+      }
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 pickUpNoGroundItem(typePic,quantity){
   for(let j = 2;j<9;j++){

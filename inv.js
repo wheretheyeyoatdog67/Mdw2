@@ -44,8 +44,9 @@ drawInv(){
 }
 invantItems(){
   this.invantArray[0] = pickaxe1;
-  this.invantArray[1] = axe1;
-  this.invantArray[2] = wand;
+  this.invantArray[1] = shovel;
+  this.invantArray[2] = axe1;
+  this.invantArray[3] = wand;
 
 
 }
@@ -55,12 +56,38 @@ displayItems(){
       let offsetX = 0;
       let offsetY = 0;
       if(this.invantArray[i] == logs){
-        offsetX = 5;
+        offsetX = 2;
         offsetY = 13;
       }
       else if(this.invantArray[i] == berries){
         offsetX = 4;
         offsetY = 10;
+      }
+      else if(this.invantArray[i] == tripShroom){
+        offsetY = 4;
+      }
+      else if(this.invantArray[i] == rock){
+        offsetY = 8;
+      }
+      else if(this.invantArray[i] == shovel){
+        offsetY = 8;
+        offsetX = 4;
+      }
+      else if(this.invantArray[i] == axe1){
+        offsetY = 4;
+
+      }
+      else if(this.invantArray[i] == bush){
+        offsetY = 10;
+
+      }
+      else if(this.invantArray[i] == dirtInv){
+        offsetY = 9;
+        offsetX = -2;
+      }
+      else if(this.invantArray[i] == cabinInv){
+        offsetY = 9;
+  
       }
 
       image(this.invantArray[i],710+offsetX,210+i*52+offsetY);

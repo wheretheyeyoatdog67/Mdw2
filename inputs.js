@@ -2,7 +2,8 @@ function keyPressed() {
 
 //TEMP GO undergroundFloor
   if (keyCode ==32) {
-    if(isAboveGround == true){isAboveGround = false}
+    if(isAboveGround == true){
+      if(mapTiles[player.x][player.y] == dirtHole)isAboveGround = false}
     else isAboveGround = true;
   }
 
@@ -41,7 +42,11 @@ function keyPressed() {
         else player.move(0,-1);
     }
   }
-
+if (keyCode ==67) {
+  if(craft.isCraft == true){
+    craft.isCraft = false;
+  }else craft.isCraft = true;
+}
 
 
 if(isAboveGround == true){
@@ -80,22 +85,46 @@ if (keyCode >=49 && keyCode <=57) {
 function mouseClicked() {
 let xCoord = floor(mouseX/50);
 let yCoord = floor(mouseY/50);
+console.log(mouseX);
+console.log(mouseY);
 //spawnCabin(xCoord,yCoord);
 if(dist(xCoord,yCoord,player.x,player.y)==1){
 if(inv.invantArray[inv.curItem-1] == logs){
   foreGroundmapTiles[xCoord][yCoord] = campfire;
   invArrItemCount[inv.curItem-1] -= 1;
 }
+
 else if(foreGroundmapTiles[xCoord][yCoord] == tree || foreGroundmapTiles[xCoord][yCoord] == tree2){
   player.playerCutTree(xCoord,yCoord);
 }
 else if(foreGroundmapTiles[xCoord][yCoord] == tripShroom){
   player.playerCutShroom(xCoord,yCoord);
 }
+else if(foreGroundmapTiles[xCoord][yCoord] == rock||foreGroundmapTiles[xCoord][yCoord] == rock2){
+  player.playerMineRock(xCoord,yCoord);
+}
 else if(foreGroundmapTiles[xCoord][yCoord] == bbush){
   foreGroundmapTiles[xCoord][yCoord] = bush;
   player.pickUpNoGroundItem(berries,2);
   //floorItemArr.push(new grounditems(berries,5,player.x,player.y,0,0));
+}
+else if(foreGroundmapTiles[xCoord][yCoord] == bush){
+
+  player.playerDigBush(xCoord,yCoord);
+  //floorItemArr.push(new grounditems(berries,5,player.x,player.y,0,0));
+}
+else if(mapTiles[xCoord][yCoord] == dirt){
+
+  player.playerDigDirt(xCoord,yCoord);
+  //floorItemArr.push(new grounditems(berries,5,player.x,player.y,0,0));
+}
+else if(inv.invantArray[inv.curItem-1] == cabinInv){
+  spawnCabin(xCoord,yCoord);
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+else if(inv.invantArray[inv.curItem-1] == bush){
+  foreGroundmapTiles[xCoord][yCoord] = bush;
+  invArrItemCount[inv.curItem-1] -= 1;
 }
 
 
@@ -113,7 +142,40 @@ if(inv.invantArray[inv.curItem-1] == berries){
   if( player.hungerVal>480)player.hungerVal = 480;
   invArrItemCount[inv.curItem-1] -= 1;
 }
+
+if(craft.isCraft){
+  buyToInv(craft.cabinCraft,craft.cabinQuan,craft.cabinSupp)
+
 }
+
+
+
+
+
+
+
+
+
+}
+
+function buyToInv(object,quantity,supplies){
+  if(object == true){
+    console.log("hi")
+    for(let i = 0;i<inv.invantArray.length;i++){
+      console.log(i);
+      craft.cabinCraft = false;
+      for(let j = 0;j<supplies.length;j++){
+      if(inv.invantArray[i] == supplies[j]){
+        invArrItemCount[i] -= quantity[j];
+      }
+}
+
+}
+inv.invantArray.push(cabinInv);
+}
+}
+
+
 
 function mouseWheel(event) {
   console.log(event.delta)

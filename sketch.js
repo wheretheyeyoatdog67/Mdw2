@@ -28,6 +28,8 @@ let triplevel = 0;
 function preload() {
   grass = loadImage('assets/tiles/grass.png');
   dirt = loadImage('assets/tiles/dirt.png');
+  dirtInv = loadImage('assets/tiles/dirtInv.png');
+  dirtHole = loadImage('assets/tiles/dirtHole.png');
   tree = loadImage('assets/tiles/tree.png');
   tree2 = loadImage('assets/tiles/tree2.png');
   rock = loadImage('assets/tiles/rock.png');
@@ -50,9 +52,14 @@ function preload() {
   tripShroom = loadImage('assets/tiles/mushroom.png');
 
   cabin = loadImage('assets/tiles/cabin.png');
+  cabinInv = loadImage('assets/tiles/cabin.png');
   transparent = loadImage('assets/tiles/transparent.png');
   axe1 = loadImage('assets/tools/axe1.png');
+  shovel = loadImage('assets/tools/shovel.png');
   song = loadSound('assets/music/mainSong.mp3');
+
+
+  chain = loadImage('assets/crafting/chain.png');
 }
 
 
@@ -73,6 +80,7 @@ function setup() {
   inv = new inv();
   inv.invantItems();
   tool = new tool(player);
+  craft = new craftingWindow();
   fillInvCountZero();
   song.pause();
 }
@@ -180,9 +188,17 @@ for(let i = 0;i<14;i++){
 //fill(j*i+inc+random(0,20),10,100,.5);
 //rect(50*i,50*j,50,50); cloud texture
   }
+
 if(mushRoomTrip == true){
   tripClock += 1;
 }
+
+if(craft.isCraft == true){
+  craft.draw();
+}
+
+
+
 }
 
 
@@ -214,11 +230,16 @@ function resizeAssets(){
   underGFloor.resize(50,50);
   pickaxe1.resize(50,50);
   axe1.resize(50,50);
-  logs.resize(40,40);
+  shovel.resize(40,40);
+  logs.resize(50,50);
   campfire.resize(50,50);
   tripShroom.resize(50,50);
   cabin.resize(100,100);
   wand.resize(55,60);
+  dirtInv.resize(50,50);
+  dirtHole.resize(50,50);
+  cabinInv.resize(50,50);
+  chain.resize(100,150);
 }
 
 function windowResized() {
@@ -271,17 +292,17 @@ function spawnMap(){
     }
   }
 
-  for (let i = 1; i<13;i++){
-    for (let j = 1; j<13;j++){
-
-  if(foreGroundmapTiles[i][j] == undefined){
-    if(foreGroundmapTiles[i+1][j] == undefined){
-      if(foreGroundmapTiles[i][j+1] == undefined){
-        if(foreGroundmapTiles[i+1][j+1] == undefined){
-          if(random(0,5)>4.7){
-            spawnCabin(i,j);
-          }
-        }}}}}}
+  // for (let i = 1; i<13;i++){
+  //   for (let j = 1; j<13;j++){
+  //
+  // if(foreGroundmapTiles[i][j] == undefined){
+  //   if(foreGroundmapTiles[i+1][j] == undefined){
+  //     if(foreGroundmapTiles[i][j+1] == undefined){
+  //       if(foreGroundmapTiles[i+1][j+1] == undefined){
+  //         if(random(0,5)>4.7){
+  //           spawnCabin(i,j);
+  //         }
+  //       }}}}}}
   spawnAnimals();
 
 }
@@ -348,8 +369,8 @@ function campfireLight(x,y){
   rect(x*50,(y+1)*50,50,50);
 }
 
-function spawnCabin(x,y){
 
+function spawnCabin(x,y){
   if(foreGroundmapTiles[x][y] == undefined){
     if(foreGroundmapTiles[x+1][y] == undefined){
       if(foreGroundmapTiles[x][y+1] == undefined){
