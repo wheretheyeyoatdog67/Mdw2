@@ -26,6 +26,9 @@ drawInv(){
   //HEALTH
   strokeWeight(2);
   stroke(0);
+  // 
+  // fill(60,50,100);
+  // rect (859,210,37,-480);
   fill(255,0,0);
   rect (859,210,37,480);
 

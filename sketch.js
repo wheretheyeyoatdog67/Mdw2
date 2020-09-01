@@ -28,6 +28,8 @@ let triplevel = 0;
 function preload() {
   grass = loadImage('assets/tiles/grass.png');
   dirt = loadImage('assets/tiles/dirt.png');
+  sand1 = loadImage('assets/tiles/desert/sand1.png');
+  sand2 = loadImage('assets/tiles/desert/sand2.png');
   dirtInv = loadImage('assets/tiles/dirtInv.png');
   dirtHole = loadImage('assets/tiles/dirtHole.png');
   tree = loadImage('assets/tiles/tree.png');
@@ -36,10 +38,25 @@ function preload() {
   rock2 = loadImage('assets/tiles/rock2.png');
   logs = loadImage('assets/tiles/logs.png');
   bush = loadImage('assets/tiles/ebush.png');
+  cactus1 = loadImage('assets/tiles/desert/cactus1.png');
+  cactus2 = loadImage('assets/tiles/desert/cactus2.png');
+  cactus3 = loadImage('assets/tiles/desert/cactus3.png');
   berries = loadImage('assets/tiles/berries.png');
   bbush = loadImage('assets/tiles/berrybush.png');
+  //Animals
   muffloPicR = loadImage('assets/tiles/mufflo.png');
   muffloPicL = loadImage('assets/tiles/muffloL.png');
+  snakePicR = loadImage('assets/tiles/desert/snake.png');
+  snakePicL = loadImage('assets/tiles/desert/snakeL.png');
+
+  //LAKE Biome
+  water1 = loadImage('assets/tiles/lake/water1.png');
+  shells1 = loadImage('assets/tiles/lake/shells1.png');
+  shells2 = loadImage('assets/tiles/lake/shells2.png');
+  shells3 = loadImage('assets/tiles/lake/shells3.png');
+  shells4 = loadImage('assets/tiles/lake/shells4.png');
+
+
   playerPic = loadImage('assets/tiles/player.png');
   invPic = loadImage('assets/invant.png');
   woodPanel = loadImage('assets/wood.png');
@@ -76,6 +93,7 @@ function setup() {
   mapGroups[2][2][0] = mapTiles;
   mapGroups[2][2][1] = foreGroundmapTiles;
   animalGroups[2][2][0] = muffArr;
+
   resizeAssets();
   player = new player();
   inv = new inv();
@@ -83,8 +101,9 @@ function setup() {
   tool = new tool(player);
   craft = new craftingWindow();
   fillInvCountZero();
+  song.setVolume(0.1);
   song.pause();
-  song.volume(0.2);
+
 }
 
 function draw() {
@@ -162,7 +181,9 @@ for(let i = 0;i<14;i++){
     //     }
     //   }
     // }
-
+    if(mapTiles[i][j] == water1){
+      waterMovement(i,j);
+    }
 
     if(mushRoomTrip == true){
       colorMode(HSB);
@@ -244,6 +265,18 @@ function resizeAssets(){
   cabinInv.resize(50,50);
   chain.resize(100,150);
   tomb.resize(50,50);
+  sand1.resize(50,50);
+  sand2.resize(50,50);
+  cactus1.resize(50,50);
+  cactus2.resize(50,50);
+  cactus3.resize(50,50);
+  snakePicR.resize(50,50);
+  snakePicL.resize(50,50);
+  water1.resize(50,50);
+  shells1.resize(30,30);
+  shells2.resize(30,30);
+  shells3.resize(30,30);
+  shells4.resize(30,30);
 }
 
 function windowResized() {
@@ -258,56 +291,15 @@ function fillInvCountZero(){
 }
 
 function spawnMap(){
-
-  //TEMPTEMP TEMP TEM PMTETMPEMPREMPRMEPRMERPEMR
   floorItemArr = [];
-  //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   setupMapGrid();
   if(isAboveGround == true){
-  for (let i = 0; i<14;i++){
-    for (let j = 0; j<14;j++){
-    let r = random(-1,1);
-    let tileType;
-    if (r>-.8){
-      if (r<-.3){
-        tileType = grass2;
-      }else tileType = grass;
-    if (r>0 && r <.1)foreGroundmapTiles[i][j] = bbush;
-    if (r>.2 && r < 1){
-      if(r>=.2&&r<.6)foreGroundmapTiles[i][j] = tree;
-      if(r>.6 && r<.8){
-        if(r>.75){
-          foreGroundmapTiles[i][j] = tripShroom;
-        }
-        else foreGroundmapTiles[i][j] = tree2;
-      }
+    //CreateWoodlandsBiome();
+    let m = (random(0,100));
+    if (m <= 60)CreateWoodlandsBiome()
+    else if (m <= 80 )CreateLakeBiome()
+    else CreateDesertBiome()
 
-    if (r>.9){
-    if(r < .95)foreGroundmapTiles[i][j] = rock;
-    else foreGroundmapTiles[i][j] = rock2;}
-  }
-}if(r < -.8) tileType = dirt;
-    mapTiles[i][j] = tileType;
-
-    //RANDOM Cabins
-
-
-
-    }
-  }
-
-  // for (let i = 1; i<13;i++){
-  //   for (let j = 1; j<13;j++){
-  //
-  // if(foreGroundmapTiles[i][j] == undefined){
-  //   if(foreGroundmapTiles[i+1][j] == undefined){
-  //     if(foreGroundmapTiles[i][j+1] == undefined){
-  //       if(foreGroundmapTiles[i+1][j+1] == undefined){
-  //         if(random(0,5)>4.7){
-  //           spawnCabin(i,j);
-  //         }
-  //       }}}}}}
-  spawnAnimals();
 
 }
 else{
@@ -350,9 +342,13 @@ function setupMapGroups(){
   }
 
 }
-function spawnAnimals(){
+function spawnAnimals(biome){
   for (let i = 0; i < random(0,6);i++){
-    muffArr[i] = new animal(curMapRX,curMapRY);
+    if(biome ==1){
+    muffArr[i] = new animal(curMapRX,curMapRY,1);}
+    else if(biome == 2){
+      muffArr[i] = new animal(curMapRX,curMapRY,2);
+    }
   }
 }
 
@@ -372,6 +368,12 @@ function campfireLight(x,y){
   rect(x*50,(y-1)*50,50,50);
   rect(x*50,(y+1)*50,50,50);
 }
+function waterMovement(x,y){
+  noStroke();
+  fill(0,0,255,20+ gameClock%10);
+  rect(x*50,y*50,50,50);
+
+}
 
 
 function spawnCabin(x,y){
@@ -388,6 +390,111 @@ function spawnCabin(x,y){
     }
   }
 }
+
+function CreateWoodlandsBiome(){
+  for (let i = 0; i<14;i++){
+    for (let j = 0; j<14;j++){
+    let r = random(-1,1);
+    let tileType;
+    if (r>-.8){
+      if (r<-.3){
+        tileType = grass2;
+      }else tileType = grass;
+    if (r>0 && r <.1)foreGroundmapTiles[i][j] = bbush;
+    if (r>.2 && r < 1){
+      if(r>=.2&&r<.6)foreGroundmapTiles[i][j] = tree;
+      if(r>.6 && r<.8){
+        if(r>.75){
+          foreGroundmapTiles[i][j] = tripShroom;
+        }
+        else foreGroundmapTiles[i][j] = tree2;
+      }
+    if (r>.9){
+    if(r < .95)foreGroundmapTiles[i][j] = rock;
+    else foreGroundmapTiles[i][j] = rock2;
+  }
+  }
+  }if(r < -.8) tileType = dirt;
+      mapTiles[i][j] = tileType;
+      }
+    }
+  spawnAnimals(1);
+}
+function CreateDesertBiome(){
+  for (let i = 0; i<14;i++){
+    for (let j = 0; j<14;j++){
+    let r = random(0,100);
+    let tileType;
+      if (r>=0){
+        if (r<20)tileType = sand2;
+        else {
+          tileType = sand1;
+          if(r<25) foreGroundmapTiles[i][j] = cactus1;
+          else if (r<30) foreGroundmapTiles[i][j] = cactus2;
+          else if (r<35) foreGroundmapTiles[i][j] = cactus3;
+        }
+
+
+        mapTiles[i][j] = tileType;
+        }
+
+      }
+    }
+    spawnAnimals(2);
+}
+
+function CreateLakeBiome(){
+  let randomX = random(4,10);
+  let randomY = random(4,10);
+  for (let i = 0; i<14;i++){
+    for (let j = 0; j<14;j++){
+    let r = random(0,100);
+    let tileType;
+      if (r>=0){
+        if (dist(i,j,randomX,randomY)>=6+floor(random(-1,1))){
+          if(r>55)tileType = grass;
+          else tileType = grass2;
+        }
+        else if (dist(i,j,randomX,randomY)>=4){
+          tileType = sand1;
+          if(r<10){
+            foreGroundmapTiles[i][j] = shells1;
+          }
+          else if (r<15){
+            foreGroundmapTiles[i][j] = shells2;
+          }else if (r<20){
+            foreGroundmapTiles[i][j] = shells3;
+          }
+          else if (r<25){
+            foreGroundmapTiles[i][j] = shells4;
+          }
+        }
+        else tileType = water1;
+
+        if(tileType == grass || tileType == grass2){
+          if(r<30){
+            foreGroundmapTiles[i][j] = tree;
+          }
+          else if (r<35){
+            foreGroundmapTiles[i][j] = tree2;
+          }
+          else if(r<40){
+            foreGroundmapTiles[i][j] = bbush;
+          }
+          else if(r<45){
+            foreGroundmapTiles[i][j] = rock2;
+          }
+        }
+        mapTiles[i][j] = tileType;
+
+        }
+
+      }
+    }
+    //spawnAnimals(2);
+}
+
+
 
 function timeOfDayCalc(){
   if (gameClock % 250 == 0){
