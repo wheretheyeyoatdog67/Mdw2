@@ -89,8 +89,9 @@ displayItems(){
         offsetY = 9;
 
       }
-
+      if(i<=8){
       image(this.invantArray[i],710+offsetX,210+i*52+offsetY);
+    }else image(this.invantArray[i],765+offsetX,-265+i*52+offsetY);
     }
 
   }
@@ -111,12 +112,14 @@ itemCount(){
       console.log(i);
       this.invantArray.splice(i,1);
       invArrItemCount.splice(i,1);
-      //invArrItemCount.push([]);
+      invArrItemCount.push([]);
     }
     if (invArrItemCount[i]!=0){
       fill(255);
       stroke(0);
-      text(invArrItemCount[i]+1,740,265+50*i);
+      if(i<=8){
+      text(invArrItemCount[i]+1,740,265+50*i);}
+      else text(invArrItemCount[i]+1,795,-215+50*i);
       noStroke();
 
     }

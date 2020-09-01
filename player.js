@@ -208,7 +208,7 @@ pickUpNoGroundItem(typePic,quantity){
 pickUp(){
   for(let i = 0;i<floorItemArr.length;i++){
   if(this.x == floorItemArr[i].x && this.y == floorItemArr[i].y){
-    for(let j = 2;j<9;j++){
+    for(let j = 2;j<17;j++){
       if (inv.invantArray[j] == floorItemArr[i].type){
       invArrItemCount[j] += 1;
       floorItemArr.splice(i,1);

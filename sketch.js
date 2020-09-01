@@ -248,7 +248,7 @@ function windowResized() {
 
 
 function fillInvCountZero(){
-  for (let i = 0; i<9;i++){
+  for (let i = 0; i<18;i++){
     invArrItemCount[i] = 0;
   }
 }
@@ -386,7 +386,7 @@ function spawnCabin(x,y){
 }
 
 function timeOfDayCalc(){
-  if (gameClock % 100 == 0){
+  if (gameClock % 250 == 0){
     if (timeOfDay > 12){
       timeDir*=-1
     }else if (timeOfDay < 0){
