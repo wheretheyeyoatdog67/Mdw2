@@ -84,7 +84,7 @@ function setup() {
   craft = new craftingWindow();
   fillInvCountZero();
   song.pause();
-  song.volume(0.5);
+  song.volume(0.2);
 }
 
 function draw() {
