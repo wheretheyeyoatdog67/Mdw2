@@ -16,7 +16,11 @@ hunger(){
 
   if(gameClock%360==0){
     if(this.hungerVal == 0){
+
       this.health -= 45;
+      if(this.health <= 0){
+        this.health =0;
+      }
     }
     this.hungerVal -=5;
 
