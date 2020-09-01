@@ -54,6 +54,13 @@ if (keyCode ==81) {
     tool.isSheifed = false;
   }
 }
+if (keyCode ==77) {
+  if(inv.mapOpen==false)
+  inv.mapOpen = true;
+  else {
+    inv.mapOpen = false;
+  }
+}
 
 
 if(isAboveGround == true){
@@ -148,6 +155,17 @@ if(inv.invantArray[inv.curItem-1] == berries){
   player.hungerVal += 5;
   if( player.hungerVal>480)player.hungerVal = 480;
   invArrItemCount[inv.curItem-1] -= 1;
+}
+if(inv.invantArray[inv.curItem-1] == rock){
+  mapTiles[xCoord][yCoord] = cobbleroad;
+  invArrItemCount[inv.curItem-1] -= 1;
+
+}
+if(inv.invantArray[inv.curItem-1] == wandInv){
+  player.x = xCoord;
+  player.y = yCoord;
+  player.teleport(xCoord,yCoord,100);
+  player.hungerVal -= 30;
 }
 
 if(craft.isCraft){

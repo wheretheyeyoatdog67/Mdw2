@@ -3,16 +3,23 @@ class player{
     this.x = 4;
     this.y = 4;
     this.hungerVal = 480;
-
+    this.health = 480;
+    this.teleArr = [];
   }
 
 draw(){
   this.hunger();
   image(playerPic,this.x*50,this.y*50);
+  this.drawTele();
 }
 hunger(){
+
   if(gameClock%360==0){
+    if(this.hungerVal == 0){
+      this.health -= 45;
+    }
     this.hungerVal -=5;
+
   }
 }
 move(x,y){
@@ -61,7 +68,37 @@ playerCollision(dir){
   }
 
 }
+teleport(x,y,time){
+  this.teleArr.push([x,y,time]);
+}
+drawTele(){
+  for (let i = 0;i<this.teleArr.length;i++){
+    if(this.teleArr[i][2]<1){
+      this.teleArr.splice(i,1)
+      return 0;
+    }
+    else
+    {
+      if(gameClock%1 == 0){
+        this.teleArr[i][2]-=10;
+      }
+      noFill();
 
+      let t1 = this.teleArr[i][0];
+      let t2 = this.teleArr[i][1];
+      let t3 = this.teleArr[i][2]/2;
+
+      stroke(70+t3*2,70,255);
+      ellipse(t1*50+25,t2*50+25,100-t3,100-t3);
+      strokeWeight(3);
+      ellipse(t1*50+25,t2*50+25,120-t3,60-t3)
+      ellipse(t1*50+25,t2*50+25,60-t3,120-t3)
+      ellipse(t1*50+25,t2*50+25,60-t3,60-t3);
+    }
+
+
+  }
+}
 playerCutTree(xCoord,yCoord){
   if(dist(this.x,this.y,xCoord,yCoord)==1){
     if(inv.curItem ==3){
@@ -176,6 +213,7 @@ playerDigDirt(xCoord,yCoord){
     }
 
 }
+
 
 
 

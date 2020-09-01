@@ -25,6 +25,7 @@ let tripClock = 0;
 let triplevel = 0;
 
 
+
 function preload() {
   grass = loadImage('assets/tiles/grass.png');
   dirt = loadImage('assets/tiles/dirt.png');
@@ -32,6 +33,7 @@ function preload() {
   sand2 = loadImage('assets/tiles/desert/sand2.png');
   dirtInv = loadImage('assets/tiles/dirtInv.png');
   dirtHole = loadImage('assets/tiles/dirtHole.png');
+  cobbleroad = loadImage('assets/tiles/cobbleroad.png');
   tree = loadImage('assets/tiles/tree.png');
   tree2 = loadImage('assets/tiles/tree2.png');
   rock = loadImage('assets/tiles/rock.png');
@@ -87,6 +89,11 @@ function setup() {
   var cnv =createCanvas(width, height);
   cnv.style('display', 'block');
   background(70, 70, 90);
+  resizeAssets();
+  player = new player();
+  inv = new inv();
+  tool = new tool(player);
+  craft = new craftingWindow();
   setupMapGrid();
   setupMapGroups();
   spawnMap();
@@ -94,14 +101,12 @@ function setup() {
   mapGroups[2][2][1] = foreGroundmapTiles;
   animalGroups[2][2][0] = muffArr;
 
-  resizeAssets();
-  player = new player();
-  inv = new inv();
   inv.invantItems();
-  tool = new tool(player);
-  craft = new craftingWindow();
+
   fillInvCountZero();
+
   song.setVolume(0.1);
+
   song.pause();
 
 }
@@ -140,8 +145,9 @@ function draw() {
     floorItemArr[i].update();
   }
   player.draw();
-  inv.drawInv();
   tool.update(player);
+  inv.drawInv();
+
 
 
 
@@ -277,6 +283,7 @@ function resizeAssets(){
   shells2.resize(30,30);
   shells3.resize(30,30);
   shells4.resize(30,30);
+  cobbleroad.resize(50,50);
 }
 
 function windowResized() {
@@ -292,6 +299,8 @@ function fillInvCountZero(){
 
 function spawnMap(){
   floorItemArr = [];
+  inv.hasBeenX.push(curMapRX);
+  inv.hasBeenY.push(curMapRY);
   setupMapGrid();
   if(isAboveGround == true){
     //CreateWoodlandsBiome();
@@ -370,7 +379,7 @@ function campfireLight(x,y){
 }
 function waterMovement(x,y){
   noStroke();
-  fill(0,0,255,20+ gameClock%10);
+  fill(0,0,255,(5*x+5*y)+ gameClock%10);
   rect(x*50,y*50,50,50);
 
 }
@@ -455,7 +464,7 @@ function CreateLakeBiome(){
           if(r>55)tileType = grass;
           else tileType = grass2;
         }
-        else if (dist(i,j,randomX,randomY)>=4){
+        else if (dist(i,j,randomX,randomY)>=4+floor(random(-1,1))){
           tileType = sand1;
           if(r<10){
             foreGroundmapTiles[i][j] = shells1;

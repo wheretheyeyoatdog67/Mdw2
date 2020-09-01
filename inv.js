@@ -7,30 +7,27 @@ class inv{
     this.invantArray = [];
     this.curItem= 1;
     this.starving=false;
+    this.mapOpen = false;
+    this.hasBeenX = [];
+    this.hasBeenY = [];
+    this.cabinLoc = [];
   }
 drawInv(){
   image(invPic,this.x,this.y);
   image(woodPanel,700,0,200,200);
 
   //Map Pos
-  strokeWeight(2);
-  stroke(0);
-  for (let i = 0;i<10;i ++){
-    for (let j = 0;j< 10;j++){
-      if(i == curMapRX && j == curMapRY){
-        fill(255,0,0);
-      }else fill(90,80,50);
-      rect(710+i*19,15+j*18,10,10);
-    }
-  }
+  if(this.mapOpen == true)this.dispMap()
+
+
   //HEALTH
   strokeWeight(2);
   stroke(0);
-  // 
-  // fill(60,50,100);
-  // rect (859,210,37,-480);
+  //
+  fill(60,50,100);
+  rect (859,690,37,-480);
   fill(255,0,0);
-  rect (859,210,37,480);
+  rect (859,690,37,-player.health);
 
 
   //Hunger
@@ -40,8 +37,8 @@ drawInv(){
   fill(60,50,100);
   rect (814,690,37,-480);
   fill(70,180,30);
-  if(player.hungerVal>= 480){
-    player.hungerVal = 480;
+  if(player.hungerVal<= 0){
+    player.hungerVal = 0;
   }
   rect (814,690,37,-player.hungerVal);
 
@@ -49,6 +46,35 @@ drawInv(){
   this.displayItems();
 
 }
+dispMap(){
+
+  fill(211,211,211,200);
+  rect(0,0,700,700)
+  strokeWeight(2);
+  stroke(0);
+  for (let i = 0;i<10;i ++){
+    for (let j = 0;j< 10;j++){
+      fill(90,80,50);
+
+      for (let k = 0;k< this.hasBeenX.length;k++){
+        if (this.hasBeenX[k]==i && this.hasBeenY[k]==j){
+          fill(255,223,0)
+        }
+      }
+      if(i == curMapRX && j == curMapRY){
+        fill(255,0,0);
+      }
+      // if (this.hasBeenX[1]==i && this.hasBeenY[1]==j){
+      //   console.log("Tre")
+      //
+      // } else fill(90,80,50);
+
+
+      rect(60+i*60,60+j*60,30,30);
+    }
+  }
+}
+
 invantItems(){
   this.invantArray[0] = pickaxe1;
   this.invantArray[1] = shovel;

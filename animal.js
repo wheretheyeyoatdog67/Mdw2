@@ -10,6 +10,7 @@ class animal{
     this.type = animalType;
     this.picLeft;
     this.picRight;
+    this.isFollowing = false;
     if(this.type == 1){
       this.picLeft =muffloPicL;
       this.picRight =muffloPicR;
@@ -30,7 +31,9 @@ draw(){
 }
 
 move(x,y){
-  if (this.onscreen = true){
+  if (this.onscreen == true){
+    this.isFollow();
+  if(this.isFollowing == false){
   let timer = gameClock + this.randomTimerOffset;
   if (timer % 150 < 1){
       let r = random(-1,1);
@@ -46,7 +49,33 @@ move(x,y){
       else if (l < 0 && this.y > 0) this.y -=1;
     }
   }
+}else this.followPlayer();
 }
 }
 
+isFollow(){
+  if (this.type == 2 && dist(this.x,this.y,player.x,player.y)< 5){
+    this.isFollowing = true;
+  }else this.isFollowing = false;
+}
+
+followPlayer(){
+    if(gameClock%40==0){
+    let tempX = ceil(player.x - this.x);
+    let tempY = ceil(player.y - this.y);
+
+    if(abs(tempX)>abs(tempY)){
+      if(tempX>1){this.x +=1;
+      this.Left = false;}
+      else {this.x-=1;
+      this.Left = true;}
+    }
+    else if(tempY>1){
+    this.y +=1;
+    }
+    else if(tempY<1)this.y-=1;
+    else{}
+}
+
+}
 }
