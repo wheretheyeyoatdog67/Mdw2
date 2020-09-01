@@ -84,6 +84,7 @@ function setup() {
   craft = new craftingWindow();
   fillInvCountZero();
   song.pause();
+  song.volume(0.5);
 }
 
 function draw() {
@@ -150,7 +151,7 @@ for(let i = 0;i<14;i++){
       campfireLight(i,j);
     }
     else if ( curTile == bush){
-      if (random(0,100) > 99.6){
+      if (random(0,100) > 99.97){
         foreGroundmapTiles[i][j] = bbush;
       }
     }

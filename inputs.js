@@ -145,7 +145,7 @@ if(inv.invantArray[inv.curItem-1] == tripShroom){
   invArrItemCount[inv.curItem-1] -= 1;
 }
 if(inv.invantArray[inv.curItem-1] == berries){
-  player.hungerVal += 15;
+  player.hungerVal += 5;
   if( player.hungerVal>480)player.hungerVal = 480;
   invArrItemCount[inv.curItem-1] -= 1;
 }

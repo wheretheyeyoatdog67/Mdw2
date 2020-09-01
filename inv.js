@@ -6,6 +6,7 @@ class inv{
     this.h = 700;
     this.invantArray = [];
     this.curItem= 1;
+    this.starving=false;
   }
 drawInv(){
   image(invPic,this.x,this.y);
@@ -29,13 +30,16 @@ drawInv(){
   rect (859,210,37,480);
 
 
-  //MANA
+  //Hunger
   strokeWeight(2);
   stroke(0);
 
   fill(60,50,100);
   rect (814,690,37,-480);
   fill(70,180,30);
+  if(player.hungerVal>= 480){
+    player.hungerVal = 480;
+  }
   rect (814,690,37,-player.hungerVal);
 
   this.highlightItem()
