@@ -87,7 +87,7 @@ displayItems(){
       }
       else if(this.invantArray[i] == cabinInv){
         offsetY = 9;
-  
+
       }
 
       image(this.invantArray[i],710+offsetX,210+i*52+offsetY);
@@ -111,6 +111,7 @@ itemCount(){
       console.log(i);
       this.invantArray.splice(i,1);
       invArrItemCount.splice(i,1);
+      //invArrItemCount.push([]);
     }
     if (invArrItemCount[i]!=0){
       fill(255);
