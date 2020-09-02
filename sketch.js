@@ -202,26 +202,11 @@ if(timeOfDay < 6){
 
       }
       for(let q = 0;q < campFirePlaceArr.length;q++){
-        if(campFirePlaceArr[q][0]==i+1 && campFirePlaceArr[q][1]==j){
+        if(dist(i,j,campFirePlaceArr[q][0],campFirePlaceArr[q][1])<2.5){
           colorMode(HSB);
           fill(0,0,0,0);
         }
-        else if(campFirePlaceArr[q][0]==i && campFirePlaceArr[q][1]==j){
-          colorMode(HSB);
-          fill(0,0,0,0);
-        }
-        else if(campFirePlaceArr[q][0]==i-1 && campFirePlaceArr[q][1]==j){
-          colorMode(HSB);
-          fill(0,0,0,0);
-        }
-        else if(campFirePlaceArr[q][0]==i && campFirePlaceArr[q][1]==j+1){
-          colorMode(HSB);
-          fill(0,0,0,0);
-        }
-        else if(campFirePlaceArr[q][0]==i && campFirePlaceArr[q][1]==j-1){
-          colorMode(HSB);
-          fill(0,0,0,0);
-        }else fill(0,0,0,.2+(6-timeOfDay)/12);
+        else fill(0,0,0,.2+(6-timeOfDay)/12);
 
 
 
