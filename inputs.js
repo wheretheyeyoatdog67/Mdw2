@@ -148,6 +148,7 @@ else if(midGroundTiles[xCoord][yCoord] == treeDead){
 }
 else if(inv.invantArray[inv.curItem-1] == cabinInv){
   spawnCabin(xCoord,yCoord);
+  cabinPlaceArr.push([xCoord,yCoord]);
   invArrItemCount[inv.curItem-1] -= 1;
 }
 else if(inv.invantArray[inv.curItem-1] == bush){

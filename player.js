@@ -131,6 +131,7 @@ playerCutTree(xCoord,yCoord){
         if(foreGroundmapTiles[this.x][this.y-1]==tree ||foreGroundmapTiles[this.x][this.y-1]==tree2){
         foreGroundmapTiles[this.x][this.y-1] = undefined;
       floorItemArr.push(new grounditems(logs,quantity,xCoord,yCoord,10,10));
+      midGroundTiles[xCoord][yCoord] = treeDead;
     }
       }
 

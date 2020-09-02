@@ -19,6 +19,7 @@ let undergroundTiles = [];
 let undergroundGroups = [];
 let floorItemArr = [];
 let invArrItemCount = [];
+let cabinPlaceArr = [];
 let mushRoomTrip = false;
 var inc = 0;
 var incDir = 1;

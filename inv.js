@@ -61,6 +61,12 @@ dispMap(){
           fill(255,223,0)
         }
       }
+      for (let k = 0;k<cabinPlaceArr.length;k++){
+        if (cabinPlaceArr[k][0]==i && cabinPlaceArr[k][1]==j){
+          fill(0,0,255);
+        }
+      }
+
       if(i == curMapRX && j == curMapRY){
         fill(255,0,0);
       }
