@@ -1,5 +1,5 @@
 class animal{
-  constructor(curMapRX,curMapRY,animalType){
+  constructor(curMapRX,curMapRY,region){
     this.x = random(1,13);
     this.y = random(1,13);
     this.randomTimerOffset = random(0,100);
@@ -7,13 +7,25 @@ class animal{
     this.spawnedRegionY =curMapRY;
     this.onscreen = true;
     this.Left = true;
-    this.type = animalType;
+    this.type = region;
     this.picLeft;
     this.picRight;
     this.isFollowing = false;
+
     if(this.type == 1){
+      let l = floor(random(0,3));
+      if( l == 0){
       this.picLeft =muffloPicL;
       this.picRight =muffloPicR;
+    }else if( l == 1){
+    this.picLeft =sheepL;
+    this.picRight =sheepR;
+  }
+  else{
+  this.picLeft =ratL;
+  this.picRight =ratR;
+}
+
     }
     else if(this.type == 2){
       this.picLeft =snakePicL;

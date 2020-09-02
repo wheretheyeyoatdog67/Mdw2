@@ -2,8 +2,8 @@ class player{
   constructor(){
     this.x = 4;
     this.y = 4;
-    this.hungerVal = 480;
-    this.health = 480;
+    this.hungerVal = 186*2;
+    this.health = 186*2;
     this.teleArr = [];
   }
 
@@ -17,12 +17,12 @@ hunger(){
   if(gameClock%360==0){
     if(this.hungerVal == 0){
 
-      this.health -= 45;
+      this.health -= 20;
       if(this.health <= 0){
         this.health =0;
       }
     }
-    this.hungerVal -=5;
+    this.hungerVal -=2;
 
   }
 }
@@ -106,57 +106,78 @@ drawTele(){
 }
 playerCutTree(xCoord,yCoord){
   if(dist(this.x,this.y,xCoord,yCoord)==1){
+    let quantity = floor(random(1,5));
     if(inv.curItem ==3){
       if(xCoord > this.x){
         if(foreGroundmapTiles[this.x+1][this.y]==tree ||foreGroundmapTiles[this.x+1][this.y]==tree2){
         foreGroundmapTiles[this.x+1][this.y] = undefined;
-        floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));
+        floorItemArr.push(new grounditems(logs,quantity,xCoord,yCoord,10,10));
+        midGroundTiles[xCoord][yCoord] = treeDead;
       }
       }
       else if(xCoord < this.x){
         if(foreGroundmapTiles[this.x-1][this.y]==tree ||foreGroundmapTiles[this.x-1][this.y]==tree2){
         foreGroundmapTiles[this.x-1][this.y] = undefined;
-      floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(logs,quantity,xCoord,yCoord,10,10));
+      midGroundTiles[xCoord][yCoord] = treeDead;}
       }
       else if(yCoord > this.y){
         if(foreGroundmapTiles[this.x][this.y+1]==tree ||foreGroundmapTiles[this.x][this.y+1]==tree2){
         foreGroundmapTiles[this.x][this.y+1] = undefined;
-      floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(logs,quantity,xCoord,yCoord,10,10));
+    midGroundTiles[xCoord][yCoord] = treeDead;}
       }
       else if(yCoord < this.y){
         if(foreGroundmapTiles[this.x][this.y-1]==tree ||foreGroundmapTiles[this.x][this.y-1]==tree2){
         foreGroundmapTiles[this.x][this.y-1] = undefined;
-      floorItemArr.push(new grounditems(logs,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(logs,quantity,xCoord,yCoord,10,10));
+    }
       }
 
     }
   }
 }
+playerDigDeadTree(xCoord,yCoord){
+  let quantity = floor(random(1,3));
+    if(inv.curItem ==2){
+        if(midGroundTiles[xCoord][yCoord]==treeDead){
+        midGroundTiles[xCoord][yCoord] = undefined;
+        floorItemArr.push(new grounditems(logs,quantity,xCoord,yCoord,10,10));
+      }
+
+
+
+    }
+
+}
+
+
+
 
 playerMineRock(xCoord,yCoord){
-
+    let quantity = floor(random(1,5));
     if(inv.curItem ==1){
 
       if(xCoord > this.x){
         if(foreGroundmapTiles[this.x+1][this.y]==rock ||foreGroundmapTiles[this.x+1][this.y]==rock2){
         foreGroundmapTiles[this.x+1][this.y] = undefined;
-        floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));
+        floorItemArr.push(new grounditems(rock,quantity,xCoord,yCoord,10,10));
       }
       }
       else if(xCoord < this.x){
         if(foreGroundmapTiles[this.x-1][this.y]==rock ||foreGroundmapTiles[this.x-1][this.y]==rock2){
         foreGroundmapTiles[this.x-1][this.y] = undefined;
-      floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(rock,quantity,xCoord,yCoord,10,10));}
       }
       else if(yCoord > this.y){
         if(foreGroundmapTiles[this.x][this.y+1]==rock ||foreGroundmapTiles[this.x][this.y+1]==rock2){
         foreGroundmapTiles[this.x][this.y+1] = undefined;
-      floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(rock,quantity,xCoord,yCoord,10,10));}
       }
       else if(yCoord < this.y){
         if(foreGroundmapTiles[this.x][this.y-1]==rock ||foreGroundmapTiles[this.x][this.y-1]==rock2){
         foreGroundmapTiles[this.x][this.y-1] = undefined;
-      floorItemArr.push(new grounditems(rock,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(rock,quantity,xCoord,yCoord,10,10));}
       }
 
     }
@@ -168,23 +189,23 @@ playerDigBush(xCoord,yCoord){
       if(xCoord > this.x){
         if(foreGroundmapTiles[this.x+1][this.y]==bush){
         foreGroundmapTiles[this.x+1][this.y] = undefined;
-        floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));
+        floorItemArr.push(new grounditems(bush,1,xCoord,yCoord,10,10));
       }
       }
       else if(xCoord < this.x){
         if(foreGroundmapTiles[this.x-1][this.y]==bush){
         foreGroundmapTiles[this.x-1][this.y] = undefined;
-      floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(bush,1,xCoord,yCoord,10,10));}
       }
       else if(yCoord > this.y){
         if(foreGroundmapTiles[this.x][this.y+1]==bush){
         foreGroundmapTiles[this.x][this.y+1] = undefined;
-      floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(bush,1,xCoord,yCoord,10,10));}
       }
       else if(yCoord < this.y){
         if(foreGroundmapTiles[this.x][this.y-1]==bush){
         foreGroundmapTiles[this.x][this.y-1] = undefined;
-      floorItemArr.push(new grounditems(bush,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(bush,1,xCoord,yCoord,10,10));}
       }
 
     }
@@ -196,23 +217,23 @@ playerDigDirt(xCoord,yCoord){
       if(xCoord > this.x){
         if(mapTiles[this.x+1][this.y]==dirt){
         mapTiles[this.x+1][this.y] = dirtHole;
-        floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));
+        floorItemArr.push(new grounditems(dirtInv,2,xCoord,yCoord,10,10));
       }
       }
       else if(xCoord < this.x){
         if(mapTiles[this.x-1][this.y]==dirt){
         mapTiles[this.x-1][this.y] = dirtHole;
-      floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(dirtInv,2,xCoord,yCoord,10,10));}
       }
       else if(yCoord > this.y){
         if(mapTiles[this.x][this.y+1]==dirt){
         mapTiles[this.x][this.y+1] = dirtHole;
-      floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(dirtInv,2,xCoord,yCoord,10,10));}
       }
       else if(yCoord < this.y){
         if(mapTiles[this.x][this.y-1]==dirt){
         mapTiles[this.x][this.y-1] = dirtHole;
-      floorItemArr.push(new grounditems(dirtInv,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(dirtInv,2,xCoord,yCoord,10,10));}
       }
 
     }
@@ -243,6 +264,10 @@ pickUpNoGroundItem(typePic,quantity){
     return 0;}
   }
   inv.invantArray.push(typePic);
+  for(let j = 2;j<17;j++){
+    if(inv.invantArray[j]==typePic)
+  invArrItemCount[j]= quantity;
+  }
   return 0;
 }
 
@@ -253,11 +278,15 @@ pickUp(){
   if(this.x == floorItemArr[i].x && this.y == floorItemArr[i].y){
     for(let j = 2;j<17;j++){
       if (inv.invantArray[j] == floorItemArr[i].type){
-      invArrItemCount[j] += 1;
+      invArrItemCount[j] += floorItemArr[i].quantity;
       floorItemArr.splice(i,1);
       return 0;}
     }
     inv.invantArray.push(floorItemArr[i].type);
+    for(let j = 2;j<17;j++){
+      if(inv.invantArray[j]==floorItemArr[i].type)
+    invArrItemCount[j]= floorItemArr[i].quantity;
+    }
     floorItemArr.splice(i,1);
     return 0;
   }
@@ -269,23 +298,23 @@ playerCutShroom(xCoord,yCoord){
       if(xCoord > this.x){
         if(foreGroundmapTiles[this.x+1][this.y]==tripShroom){
         foreGroundmapTiles[this.x+1][this.y] = undefined;
-        floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+        floorItemArr.push(new grounditems(tripShroom,2,xCoord,yCoord,10,10));}
 
       }
       else if(xCoord < this.x){
         if(foreGroundmapTiles[this.x-1][this.y]==tripShroom){
         foreGroundmapTiles[this.x-1][this.y] = undefined;
-      floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(tripShroom,2,xCoord,yCoord,10,10));}
       }
       else if(yCoord > this.y){
         if(foreGroundmapTiles[this.x][this.y+1]==tripShroom){
         foreGroundmapTiles[this.x][this.y+1] = undefined;
-      floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(tripShroom,2,xCoord,yCoord,10,10));}
       }
       else if(yCoord < this.y){
         if(foreGroundmapTiles[this.x][this.y-1]==tripShroom){
         foreGroundmapTiles[this.x][this.y-1] = undefined;
-      floorItemArr.push(new grounditems(tripShroom,5,xCoord,yCoord,10,10));}
+      floorItemArr.push(new grounditems(tripShroom,2,xCoord,yCoord,10,10));}
       }
 
 

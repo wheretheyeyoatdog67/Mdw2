@@ -118,6 +118,7 @@ if(inv.invantArray[inv.curItem-1] == logs){
 
 else if(foreGroundmapTiles[xCoord][yCoord] == tree || foreGroundmapTiles[xCoord][yCoord] == tree2){
   player.playerCutTree(xCoord,yCoord);
+
 }
 else if(foreGroundmapTiles[xCoord][yCoord] == tripShroom){
   player.playerCutShroom(xCoord,yCoord);
@@ -140,6 +141,11 @@ else if(mapTiles[xCoord][yCoord] == dirt){
   player.playerDigDirt(xCoord,yCoord);
   //floorItemArr.push(new grounditems(berries,5,player.x,player.y,0,0));
 }
+else if(midGroundTiles[xCoord][yCoord] == treeDead){
+
+  player.playerDigDeadTree(xCoord,yCoord);
+  //floorItemArr.push(new grounditems(berries,5,player.x,player.y,0,0));
+}
 else if(inv.invantArray[inv.curItem-1] == cabinInv){
   spawnCabin(xCoord,yCoord);
   invArrItemCount[inv.curItem-1] -= 1;
@@ -156,16 +162,16 @@ if(inv.invantArray[inv.curItem-1] == tripShroom){
   mushRoomTrip = true;
   tripClock = 0;
   triplevel += 1;
-  player.hungerVal -= 15;
+  player.hungerVal -= 5;
   invArrItemCount[inv.curItem-1] -= 1;
 }
 if(inv.invantArray[inv.curItem-1] == berries){
-  player.hungerVal += 5;
+  player.hungerVal += 10;
   if( player.hungerVal>480)player.hungerVal = 480;
   invArrItemCount[inv.curItem-1] -= 1;
 }
 if(inv.invantArray[inv.curItem-1] == rock){
-  mapTiles[xCoord][yCoord] = cobbleroad;
+  midGroundTiles[xCoord][yCoord] = cobbleroad;
   invArrItemCount[inv.curItem-1] -= 1;
 
 }

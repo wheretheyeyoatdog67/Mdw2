@@ -47,11 +47,17 @@ function preload() {
   berries = loadImage('assets/tiles/berries.png');
   bbush = loadImage('assets/tiles/berrybush.png');
   grassMid = loadImage('assets/tiles/grassMid.png');
+
+  treeDead = loadImage('assets/tiles/treeDead.png');
   //Animals
   muffloPicR = loadImage('assets/tiles/mufflo.png');
   muffloPicL = loadImage('assets/tiles/muffloL.png');
   snakePicR = loadImage('assets/tiles/desert/snake.png');
   snakePicL = loadImage('assets/tiles/desert/snakeL.png');
+  sheepR = loadImage('assets/tiles/animals/SheepR.png');
+  sheepL = loadImage('assets/tiles/animals/SheepL.png');
+  ratR = loadImage('assets/tiles/animals/RatR.png')
+  ratL= loadImage('assets/tiles/animals/RatL.png')
 
   //LAKE Biome
   water1 = loadImage('assets/tiles/lake/water1.png');
@@ -59,7 +65,7 @@ function preload() {
   shells2 = loadImage('assets/tiles/lake/shells2.png');
   shells3 = loadImage('assets/tiles/lake/shells3.png');
   shells4 = loadImage('assets/tiles/lake/shells4.png');
-
+  reeds = loadImage('assets/tiles/reeds.png');
 
   playerPic = loadImage('assets/tiles/player.png');
   invPic = loadImage('assets/invant.png');
@@ -260,6 +266,10 @@ function resizeAssets(){
   berries.resize(40,40);
   muffloPicR.resize(80,80);
   muffloPicL.resize(80,80);
+  sheepR.resize(60,60);
+  sheepL.resize(60,60);
+  ratR.resize(40,40);
+  ratL.resize(40,40);
   playerPic.resize(50,50);
   invPic.resize(205,500);
   woodPanel.resize(200,100);
@@ -293,6 +303,8 @@ function resizeAssets(){
   shells4.resize(30,30);
   cobbleroad.resize(50,50);
   grassMid.resize(40,40);
+  reeds.resize(40,40);
+  treeDead.resize(65,65);
 }
 
 function windowResized() {
@@ -370,7 +382,7 @@ function spawnAnimals(biome){
     if(biome ==1){
     muffArr[i] = new animal(curMapRX,curMapRY,1);}
     else if(biome == 2){
-      muffArr[i] = new animal(curMapRX,curMapRY,2);
+    muffArr[i] = new animal(curMapRX,curMapRY,2);
     }
   }
 }
@@ -418,20 +430,11 @@ function CreateWoodlandsBiome(){
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
 
-
-
-
     let r = random(-1,1);
     if(r > -.5 && r < -.3){
     midGroundTiles[i][j]=grassMid;
     }
     let tileType;
-
-
-
-
-
-
     if (r>-.8){
       if (r<-.3){
         tileType = grass2;
@@ -496,19 +499,28 @@ function CreateLakeBiome(){
         }
         else if (dist(i,j,randomX,randomY)>=4+floor(random(-1,1))){
           tileType = sand1;
-          if(r<10){
+          if(r<5){
             midGroundTiles[i][j] = shells1;
           }
-          else if (r<15){
+          else if (r<8){
             midGroundTiles[i][j] = shells2;
-          }else if (r<20){
+          }else if (r<11){
             midGroundTiles[i][j] = shells3;
           }
-          else if (r<25){
+          else if (r<14){
             midGroundTiles[i][j] = shells4;
           }
         }
-        else tileType = water1;
+        else {
+          let l = random(0,100)
+            if(l>60){
+              midGroundTiles[i][j] = reeds;
+            }
+
+          tileType = water1;
+
+
+        }
 
         if(tileType == grass || tileType == grass2){
           if(r<30){
@@ -530,7 +542,7 @@ function CreateLakeBiome(){
 
       }
     }
-    //spawnAnimals(2);
+    spawnAnimals(1);
 }
 
 

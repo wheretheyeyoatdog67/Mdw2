@@ -25,9 +25,9 @@ drawInv(){
   stroke(0);
   //
   fill(60,50,100);
-  rect (859,690,37,-480);
+  rect (707,7,186,15);
   fill(255,0,0);
-  rect (859,690,37,-player.health);
+  rect (893,7,-player.health/2,15);
 
 
   //Hunger
@@ -35,12 +35,12 @@ drawInv(){
   stroke(0);
 
   fill(60,50,100);
-  rect (814,690,37,-480);
+  rect (707,22,186,15);
   fill(70,180,30);
   if(player.hungerVal<= 0){
     player.hungerVal = 0;
   }
-  rect (814,690,37,-player.hungerVal);
+  rect(893,22,-player.hungerVal/2,15);
 
   this.highlightItem()
   this.displayItems();
@@ -102,7 +102,7 @@ displayItems(){
         offsetY = 10;
       }
       else if(this.invantArray[i] == tripShroom){
-        offsetY = 4;
+        offsetY = 8;
       }
       else if(this.invantArray[i] == rock){
         offsetY = 8;
