@@ -114,6 +114,7 @@ if(dist(xCoord,yCoord,player.x,player.y)==1){
 if(inv.invantArray[inv.curItem-1] == logs){
   foreGroundmapTiles[xCoord][yCoord] = campfire;
   invArrItemCount[inv.curItem-1] -= 1;
+  campFirePlaceArr.push([xCoord,yCoord]);
 }
 
 else if(foreGroundmapTiles[xCoord][yCoord] == tree || foreGroundmapTiles[xCoord][yCoord] == tree2){

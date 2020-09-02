@@ -20,6 +20,7 @@ let undergroundGroups = [];
 let floorItemArr = [];
 let invArrItemCount = [];
 let cabinPlaceArr = [];
+let campFirePlaceArr = [];
 let mushRoomTrip = false;
 var inc = 0;
 var incDir = 1;
@@ -177,7 +178,69 @@ else{
 if(timeOfDay < 6){
   colorMode(HSB);
   fill(0,0,0,.2+(6-timeOfDay)/12);
-  rect(0,0,700,700);
+  for(let i = 0;i<14;i++){
+    for(let j = 0;j<14;j++){
+
+      if(inv.curItem == 5){
+        // if(i==player.x -1 ||i==player.x +1 ||i==player.x){
+        //   if(j==player.y -1 ||j==player.y +1 ||j==player.y){
+        //     colorMode(RGB);
+        //     fill(255,255,0,20+ gameClock%10);
+        //   }else {
+        //     colorMode(HSB);
+        //     fill(0,0,0,.2+(6-timeOfDay)/12);}
+        // }else {
+        //   colorMode(HSB);
+        //   fill(0,0,0,.2+(6-timeOfDay)/12);}
+        if(dist(i,j,player.x,player.y)<4){
+          colorMode(RGB);
+          fill(255,255,0,20+ gameClock%10);
+        }else {
+           colorMode(HSB);
+           fill(0,0,0,.2+(6-timeOfDay)/12);
+        }
+
+      }
+      for(let q = 0;q < campFirePlaceArr.length;q++){
+        if(campFirePlaceArr[q][0]==i+1 && campFirePlaceArr[q][1]==j){
+          colorMode(HSB);
+          fill(0,0,0,0);
+        }
+        else if(campFirePlaceArr[q][0]==i && campFirePlaceArr[q][1]==j){
+          colorMode(HSB);
+          fill(0,0,0,0);
+        }
+        else if(campFirePlaceArr[q][0]==i-1 && campFirePlaceArr[q][1]==j){
+          colorMode(HSB);
+          fill(0,0,0,0);
+        }
+        else if(campFirePlaceArr[q][0]==i && campFirePlaceArr[q][1]==j+1){
+          colorMode(HSB);
+          fill(0,0,0,0);
+        }
+        else if(campFirePlaceArr[q][0]==i && campFirePlaceArr[q][1]==j-1){
+          colorMode(HSB);
+          fill(0,0,0,0);
+        }else fill(0,0,0,.2+(6-timeOfDay)/12);
+
+
+
+
+      // let curTile = foreGroundmapTiles[i][j];
+      // if(curTile == campfire){
+      //   //console.log("FIll")
+      //   colorMode(HSB);
+      //   fill(0,0,0,0);
+      //
+      // }else fill(0,0,0,.2+(6-timeOfDay)/12);
+
+      }
+
+      rect(50*i,50*j,50,50);
+
+    }
+  }
+
   colorMode(RGB);}
 }
 
@@ -221,6 +284,7 @@ for(let i = 0;i<14;i++){
       }
       fill((tan((j)/(i+13))*170)+inc,255,150,.3+triplevel/10);
       rect(50*i,50*j,50,50);
+
       noFill();
       colorMode(RGB);
 
