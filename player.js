@@ -104,6 +104,7 @@ drawTele(){
 
   }
 }
+//hi
 playerCutTree(xCoord,yCoord){
   if(dist(this.x,this.y,xCoord,yCoord)==1){
     let quantity = floor(random(1,5));
