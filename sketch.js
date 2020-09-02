@@ -87,7 +87,7 @@ function preload() {
   shovel = loadImage('assets/tools/shovel.png');
   song = loadSound('assets/music/mainSong.mp3');
 
-
+  torch = loadImage('assets/tools/torch.png');
   chain = loadImage('assets/crafting/chain.png');
 }
 
@@ -176,7 +176,7 @@ else{
 
 if(timeOfDay < 6){
   colorMode(HSB);
-  fill(0,0,0,.1+(6-timeOfDay)/12);
+  fill(0,0,0,.2+(6-timeOfDay)/12);
   rect(0,0,700,700);
   colorMode(RGB);}
 }
@@ -306,6 +306,7 @@ function resizeAssets(){
   grassMid.resize(40,40);
   reeds.resize(40,40);
   treeDead.resize(65,65);
+  torch.resize(50,50);
 }
 
 function windowResized() {

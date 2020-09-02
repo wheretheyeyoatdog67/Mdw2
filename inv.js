@@ -40,6 +40,7 @@ drawInv(){
   if(player.hungerVal<= 0){
     player.hungerVal = 0;
   }
+  else if (player.health <= 186*2) player.health+=1;
   rect(893,22,-player.hungerVal/2,15);
 
   this.highlightItem()
@@ -87,7 +88,7 @@ invantItems(){
   this.invantArray[1] = shovel;
   this.invantArray[2] = axe1;
   this.invantArray[3] = wandInv;
-  this.invantArray[4] = tomb;
+  this.invantArray[4] = torch;
 
 
 }
@@ -100,7 +101,7 @@ displayItems(){
         offsetX = 2;
         offsetY = 13;
       }
-      else if(this.invantArray[i] == tomb){
+      else if(this.invantArray[i] == torch){
         offsetY = 9;
 
       }
