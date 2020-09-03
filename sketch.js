@@ -53,7 +53,7 @@ function preload() {
   berries = loadImage('assets/tiles/berries.png');
   bbush = loadImage('assets/tiles/berrybush.png');
   grassMid = loadImage('assets/tiles/grassMid.png');
-
+  following = loadImage('assets/tiles/angry.png');
   treeDead = loadImage('assets/tiles/treeDead.png');
   //Animals
   muffloPicR = loadImage('assets/tiles/mufflo.png');
@@ -403,6 +403,7 @@ function resizeAssets(){
   bigShroom.resize(100,100);
   floor1.resize(50,50);
   midMush.resize(50,50);
+  following.resize(20,20);
 }
 
 function windowResized() {

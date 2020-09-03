@@ -1,7 +1,7 @@
 class animal{
   constructor(curMapRX,curMapRY,region){
-    this.x = random(1,13);
-    this.y = random(1,13);
+    this.x = floor(random(1,13));
+    this.y = floor(random(1,13));
     this.randomTimerOffset = random(0,100);
     this.spawnedRegionX =curMapRX;
     this.spawnedRegionY =curMapRY;
@@ -12,6 +12,7 @@ class animal{
     this.picRight;
     this.isFollowing = false;
     this.followTic = 0;
+    this.attackDamage = 10;
 
     if(this.type == 1){
       let l = floor(random(0,3));
@@ -26,7 +27,6 @@ class animal{
   this.picLeft =ratL;
   this.picRight =ratR;
 }
-
     }
     else if(this.type == 2){
       this.picLeft =snakePicL;
@@ -37,8 +37,8 @@ class animal{
 draw(){
   if (this.spawnedRegionX == curMapRX &&  this.spawnedRegionY ==curMapRY) {
 
-  if(this.Left == true){image(this.picLeft,this.x*46,this.y*48);}
-  else image(this.picRight,this.x*46,this.y*48);
+  if(this.Left == true){image(this.picLeft,this.x*50,this.y*50);}
+  else image(this.picRight,this.x*50,this.y*50);
   this.onscreen = true;
 }else this.onscreen = false;
 }
@@ -73,28 +73,40 @@ isFollow(){
 }
 
 followPlayer(){
-  console.log(this.x)
-  console.log(this.y)
-  if(floor(this.x) == player.x && floor(this.y) == player.y){
-    console.log("attack")
+  if(this.x == player.x && this.y == player.y){
+
+    this.attack()
   }
+  image(following,this.x*50,this.y*50)
+  
+
     if(gameClock%40==0){
+      if(this.y == player.y) this.followTic = 0;
+      if(this.x == player.x) this.followTic = 1;
+
     if(this.followTic == 0){
-      this.followTic=1;
     if(player.x>this.x){
       this.x +=1;
       this.Left = false;
+    }else {
+      this.x -=1;
+      this.Left = true;}
+  }
+  if(this.followTic == 1){
+      if(player.y>this.y)this.y +=1;
+      else this.y -=1;
 
-    }else {this.x -=1;
-    this.Left = true;}}
+  }
 
-    else if(player.y>this.y){
-      this.y +=1;
-      this.followTic=0;
-    }else {this.y -=1;
-  this.followTic=1;}
+}
+
+}
+attack(){
+
+    player.health -= this.attackDamage;
+    this.x+=floor(random(-1,1));
+    this.y-=floor(random(-1,1));
 
 }
 
-}
 }

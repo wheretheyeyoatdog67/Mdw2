@@ -11,9 +11,10 @@ function keyPressed() {
   if (keyCode ==65) {
     if (!player.playerCollision(65)){
 
-      if (player.x == 0){
+      if (player.x == 0 && curMapRX != 0){
       player.moveToNextRegion(-1,0)
       }
+      else if (player.x == 0&&curMapRX == 0){}
       else player.move(-1,0);
       player.hungerVal -=1;
    }
@@ -21,27 +22,30 @@ function keyPressed() {
 
   if (keyCode ==68) {
     if (!player.playerCollision(68)){
-      if (player.x == 13){
+      if (player.x == 13 && curMapRX != 9){
         player.moveToNextRegion(1,0)
         }
+        else if (player.x == 13&&curMapRX == 9){}
         else player.move(1,0);
         player.hungerVal -=1;
       }
     }
   if (keyCode ==83) {
     if (!player.playerCollision(83)){
-      if (player.y == 13){
+      if (player.y == 13 && curMapRY != 9){
         player.moveToNextRegion(0,1)
       }
+      else if (player.y == 13&&curMapRY == 9){}
       else player.move(0,1);
       player.hungerVal -=1;
     }
   }
   if (keyCode ==87) {
     if (!player.playerCollision(87)){
-      if (player.y == 0){
+      if (player.y == 0&& curMapRY != 0){
         player.moveToNextRegion(0,-1)
         }
+        else if (player.y == 0 &&curMapRY == 0){}
         else player.move(0,-1);
         player.hungerVal -=1;
     }
@@ -248,9 +252,9 @@ if(craft.isCraft){
 
 function buyToInv(object,quantity,supplies){
   if(object == true){
-    console.log("hi")
+
     for(let i = 0;i<inv.invantArray.length;i++){
-      console.log(i);
+
       craft.cabinCraft = false;
       for(let j = 0;j<supplies.length;j++){
       if(inv.invantArray[i] == supplies[j]){
@@ -267,7 +271,7 @@ player.pickUpNoGroundItem(craft.invIcon,1);
 
 
 function mouseWheel(event) {
-  console.log(event.delta)
+
   if(event.delta < 0){
     if(inv.curItem == 1){
       inv.curItem = 1;
