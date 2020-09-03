@@ -11,6 +11,7 @@ class animal{
     this.picLeft;
     this.picRight;
     this.isFollowing = false;
+    this.followTic = 0;
 
     if(this.type == 1){
       let l = floor(random(0,3));
@@ -72,21 +73,27 @@ isFollow(){
 }
 
 followPlayer(){
+  console.log(this.x)
+  console.log(this.y)
+  if(floor(this.x) == player.x && floor(this.y) == player.y){
+    console.log("attack")
+  }
     if(gameClock%40==0){
-    let tempX = ceil(player.x - this.x);
-    let tempY = ceil(player.y - this.y);
+    if(this.followTic == 0){
+      this.followTic=1;
+    if(player.x>this.x){
+      this.x +=1;
+      this.Left = false;
 
-    if(abs(tempX)>abs(tempY)){
-      if(tempX>1){this.x +=1;
-      this.Left = false;}
-      else {this.x-=1;
-      this.Left = true;}
-    }
-    else if(tempY>1){
-    this.y +=1;
-    }
-    else if(tempY<1)this.y-=1;
-    else{}
+    }else {this.x -=1;
+    this.Left = true;}}
+
+    else if(player.y>this.y){
+      this.y +=1;
+      this.followTic=0;
+    }else {this.y -=1;
+  this.followTic=1;}
+
 }
 
 }
