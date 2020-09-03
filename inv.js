@@ -33,7 +33,9 @@ drawInv(){
   //Hunger
   strokeWeight(2);
   stroke(0);
-
+  if(player.hungerVal>186*2){
+    player.hungerVal =186*2;
+  }
   fill(60,50,100);
   rect (707,22,186,15);
   fill(70,180,30);
@@ -101,7 +103,12 @@ displayItems(){
         offsetX = 2;
         offsetY = 13;
       }
+
       else if(this.invantArray[i] == torch){
+        offsetY = 9;
+
+      }
+      else if(this.invantArray[i] == campfire){
         offsetY = 9;
 
       }

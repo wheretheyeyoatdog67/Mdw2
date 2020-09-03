@@ -1,9 +1,17 @@
 class craftingWindow{
   constructor(){
     this.isCraft = false;
+
     this.cabinCraft = false;
     this.cabinSupp= [rock,logs]
     this.cabinQuan= [10,20]
+
+
+    this.campFireCraft = false;
+    this.campFireSupp= [logs]
+    this.campFireQuan= [5]
+    this.invIcon;
+
   }
   draw(){
     image(chain,150,0);
@@ -13,6 +21,20 @@ class craftingWindow{
     fill(210,180,140);
     rect(30,150,640,400);
     this.drawCabinS();
+    this.drawCampfire();
+
+    if(dist(mouseX,mouseY,207,243)<50){
+      if(this.checkCanBuy(this.campFireQuan[0],logs)){
+          fill(255, 204, 0,60);
+          rect(165,193,90,96);
+          fill(255)
+          text("Craft",167,207);
+          this.campFireCraft = true;
+          this.invIcon = campfire;
+      }
+    }else this.campFireCraft = false;
+
+
   }
   drawCabinS(){
     textSize(35);
@@ -37,9 +59,22 @@ class craftingWindow{
           fill(255)
           text("Craft",67,207);
           this.cabinCraft = true;
+          this.invIcon = cabinInv;
         }
       }
     }else this.cabinCraft = false;
+}
+
+drawCampfire(){
+  textSize(25);
+  strokeWeight(2)
+  stroke(0);
+  fill(255)
+  text("Campfire",165,185);
+  image(campfireCraft, 160,190);
+  image(logs, 210, 290);
+  textSize(17)
+  text("5",210,340)
 }
 
 

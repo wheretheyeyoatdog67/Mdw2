@@ -34,8 +34,10 @@ move(x,y){
 }
 moveToNextRegion(xL,yL){
   floorItemArr = [];
+  campFirePlaceArr = [];
   curMapRX = curMapRX + xL;
   curMapRY = curMapRY + yL;
+
   if (xL < 0){
     this.x = 13
   }
@@ -139,6 +141,28 @@ playerCutTree(xCoord,yCoord){
     }
   }
 }
+
+playerBigCutTree(xCoord,yCoord){
+    let quantity = floor(random(5,15));
+    if(inv.curItem ==3){
+
+        foreGroundmapTiles[xCoord][yCoord] = undefined;
+        foreGroundmapTiles[xCoord+1][yCoord] = undefined;
+        foreGroundmapTiles[xCoord][yCoord+1] = undefined;
+        foreGroundmapTiles[xCoord+1][yCoord+1] = undefined;
+        floorItemArr.push(new grounditems(logs,quantity,xCoord,yCoord+1,10,10));
+        midGroundTiles[xCoord][yCoord+1] = treeDead;
+
+
+  }
+}
+
+
+
+
+
+
+
 playerDigDeadTree(xCoord,yCoord){
   let quantity = floor(random(1,3));
     if(inv.curItem ==2){
@@ -260,15 +284,17 @@ playerDigDirt(xCoord,yCoord){
 
 
 pickUpNoGroundItem(typePic,quantity){
-  for(let j = 2;j<9;j++){
+  for(let j = 2;j<17;j++){
     if (inv.invantArray[j] == typePic){
     invArrItemCount[j] += quantity;
-    return 0;}
+    return 0;
+  }
   }
   inv.invantArray.push(typePic);
+
   for(let j = 2;j<17;j++){
     if(inv.invantArray[j]==typePic)
-  invArrItemCount[j]= quantity;
+  invArrItemCount[j]= quantity-1;
   }
   return 0;
 }
@@ -287,7 +313,7 @@ pickUp(){
     inv.invantArray.push(floorItemArr[i].type);
     for(let j = 2;j<17;j++){
       if(inv.invantArray[j]==floorItemArr[i].type)
-    invArrItemCount[j]= floorItemArr[i].quantity;
+    invArrItemCount[j]= floorItemArr[i].quantity-1;
     }
     floorItemArr.splice(i,1);
     return 0;

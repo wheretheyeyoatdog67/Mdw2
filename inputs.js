@@ -80,6 +80,14 @@ mapTiles = mapGroups[curMapRX][curMapRY][0];
 foreGroundmapTiles= mapGroups[curMapRX][curMapRY][1];
 midGroundTiles = mapGroups[curMapRX][curMapRY][2];
 muffArr = animalGroups[curMapRX][curMapRY][0];
+for(let i = 0;i<14;i++){
+  for(let j = 0;j<14;j++){
+    if(foreGroundmapTiles[i][j]==campfire || midGroundTiles[i][j]== torch)
+    {
+      campFirePlaceArr.push([i,j])
+    }
+  }
+}
 }}
 else {
   if(undergroundGroups[curMapRX][curMapRY][0] == undefined){
@@ -92,6 +100,14 @@ else {
   foreGroundmapTiles= undergroundGroups[curMapRX][curMapRY][1];
   midGroundTiles= undergroundGroups[curMapRX][curMapRY][2];
   muffArr = [];
+  for(let i = 0;i<14;i++){
+    for(let j = 0;j<14;j++){
+      if(foreGroundmapTiles[i][j]==campfire || midGroundTiles[i][j]== torch)
+      {
+        campFirePlaceArr.push([i,j])
+      }
+    }
+  }
   }
 
 }
@@ -111,14 +127,31 @@ console.log(mouseX);
 console.log(mouseY);
 //spawnCabin(xCoord,yCoord);
 if(dist(xCoord,yCoord,player.x,player.y)==1){
-if(inv.invantArray[inv.curItem-1] == logs){
-  foreGroundmapTiles[xCoord][yCoord] = campfire;
-  invArrItemCount[inv.curItem-1] -= 1;
-  campFirePlaceArr.push([xCoord,yCoord]);
-}
+// if(inv.invantArray[inv.curItem-1] == logs){
+//   foreGroundmapTiles[xCoord][yCoord] = campfire;
+//   invArrItemCount[inv.curItem-1] -= 1;
+//   campFirePlaceArr.push([xCoord,yCoord]);
+// }
 
-else if(foreGroundmapTiles[xCoord][yCoord] == tree || foreGroundmapTiles[xCoord][yCoord] == tree2){
+if(foreGroundmapTiles[xCoord][yCoord] == tree){
   player.playerCutTree(xCoord,yCoord);
+
+}
+//
+//if(foreGroundmapTiles[xCoord][yCoord] == tree2||foreGroundmapTiles[xCoord-1][yCoord]==tree2||foreGroundmapTiles[xCoord][yCoord-1]==tree2||foreGroundmapTiles[xCoord-1][yCoord-1]==tree2){
+if(foreGroundmapTiles[xCoord][yCoord] == tree2 || foreGroundmapTiles[xCoord][yCoord] == transparent){
+  if(foreGroundmapTiles[xCoord][yCoord] == transparent){
+    if(foreGroundmapTiles[xCoord-1][yCoord] == tree2){
+      player.playerBigCutTree(xCoord-1,yCoord);
+    }
+    else if (foreGroundmapTiles[xCoord-1][yCoord-1] == tree2){
+      player.playerBigCutTree(xCoord-1,yCoord-1);
+    }
+    else if (foreGroundmapTiles[xCoord][yCoord-1] == tree2){
+      player.playerBigCutTree(xCoord,yCoord-1);
+    }
+  }
+  else player.playerBigCutTree(xCoord,yCoord);
 
 }
 else if(foreGroundmapTiles[xCoord][yCoord] == tripShroom){
@@ -128,7 +161,8 @@ else if(foreGroundmapTiles[xCoord][yCoord] == rock||foreGroundmapTiles[xCoord][y
   player.playerMineRock(xCoord,yCoord);
 }
 else if(foreGroundmapTiles[xCoord][yCoord] == bbush){
-  foreGroundmapTiles[xCoord][yCoord] = bush;
+  if(random(0,50)<25){
+  foreGroundmapTiles[xCoord][yCoord] = bush;}
   player.pickUpNoGroundItem(berries,2);
   //floorItemArr.push(new grounditems(berries,5,player.x,player.y,0,0));
 }
@@ -155,6 +189,11 @@ else if(inv.invantArray[inv.curItem-1] == cabinInv){
 else if(inv.invantArray[inv.curItem-1] == bush){
   foreGroundmapTiles[xCoord][yCoord] = bush;
   invArrItemCount[inv.curItem-1] -= 1;
+}
+else if(inv.invantArray[inv.curItem-1] == torch){
+  midGroundTiles[xCoord][yCoord] = torch;
+  campFirePlaceArr.push([xCoord,yCoord])
+  //invArrItemCount[inv.curItem-1] -= 1;
 }
 
 
@@ -183,9 +222,17 @@ if(inv.invantArray[inv.curItem-1] == wandInv){
   player.teleport(xCoord,yCoord,100);
   player.hungerVal -= 30;
 }
+if(inv.invantArray[inv.curItem-1] == campfire){
+  foreGroundmapTiles[xCoord][yCoord] = campfire;
+  campFirePlaceArr.push([xCoord,yCoord]);
+  invArrItemCount[inv.curItem-1] -= 1;
+}
 
 if(craft.isCraft){
-  buyToInv(craft.cabinCraft,craft.cabinQuan,craft.cabinSupp)
+  if(craft.cabinCraft == true){
+  buyToInv(craft.cabinCraft,craft.cabinQuan,craft.cabinSupp)}
+  else if(craft.campFireCraft == true){
+  buyToInv(craft.campFireCraft,craft.campFireQuan,craft.campFireSupp)}
 
 }
 
@@ -212,7 +259,8 @@ function buyToInv(object,quantity,supplies){
 }
 
 }
-inv.invantArray.push(cabinInv);
+player.pickUpNoGroundItem(craft.invIcon,1);
+
 }
 }
 

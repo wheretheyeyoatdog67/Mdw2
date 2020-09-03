@@ -17,6 +17,7 @@ let timeOfDay = 6;
 let timeDir = 1;
 let undergroundTiles = [];
 let undergroundGroups = [];
+
 let floorItemArr = [];
 let invArrItemCount = [];
 let cabinPlaceArr = [];
@@ -26,6 +27,9 @@ var inc = 0;
 var incDir = 1;
 let tripClock = 0;
 let triplevel = 0;
+
+let lightArr = [];
+
 
 
 
@@ -69,6 +73,11 @@ function preload() {
   shells4 = loadImage('assets/tiles/lake/shells4.png');
   reeds = loadImage('assets/tiles/reeds.png');
 
+  //MUSHROOM Biome
+  floor1 = loadImage('assets/tiles/mush/floor1.png');
+  bigShroom = loadImage('assets/tiles/shroom2.png')
+  midMush = loadImage('assets/tiles/mushroom.png')
+
   playerPic = loadImage('assets/tiles/player.png');
   invPic = loadImage('assets/invant.png');
   woodPanel = loadImage('assets/wood.png');
@@ -79,7 +88,8 @@ function preload() {
   wand = loadImage('assets/tools/wand.png');
   wandInv = loadImage('assets/tools/wandInv.png');
   campfire = loadImage('assets/campfire.png');
-  tripShroom = loadImage('assets/tiles/mushroom.png');
+  campfireCraft = loadImage('assets/campfire.png');
+  tripShroom = loadImage('assets/tiles/mush.png');
   tomb = loadImage('assets/tools/tomb.png');
   cabin = loadImage('assets/tiles/cabin.png');
   cabinInv = loadImage('assets/tiles/cabin.png');
@@ -130,8 +140,15 @@ function draw() {
   if (!song.isPlaying()){
     song.play();}
   gameClock += 1;
+  if(gameClock>1000){
+    gameClock = 0;
+  }
   let cabinPosI = [];
   let cabinPosJ = [];
+  let bigShroomPosI = [];
+  let bigShroomPosJ = [];
+  let bigTreeX = [];
+  let bigTreeY = [];
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
       drawTile(mapTiles[i][j],i,j);
@@ -142,6 +159,14 @@ function draw() {
           cabinPosI.push(i);
           cabinPosJ.push(j);
         }
+        if(curT == bigShroom){
+          bigShroomPosI.push(i);
+          bigShroomPosJ.push(j);
+        }
+        if(curT == tree2){
+          bigTreeX.push(i);
+          bigTreeY.push(j);
+        }
 
         else drawTile(foreGroundmapTiles[i][j],i,j)
         }
@@ -150,6 +175,12 @@ function draw() {
 
   for (let i = 0; i<cabinPosI.length;i++){
     drawTile(foreGroundmapTiles[cabinPosI[i]][cabinPosJ[i]],cabinPosI[i],cabinPosJ[i])
+  }
+  for (let i = 0; i<bigShroomPosI.length;i++){
+    drawTile(foreGroundmapTiles[bigShroomPosI[i]][bigShroomPosJ[i]],bigShroomPosI[i],bigShroomPosJ[i])
+  }
+  for (let i = 0; i<bigTreeX.length;i++){
+    drawTile(foreGroundmapTiles[bigTreeX[i]][bigTreeY[i]],bigTreeX[i],bigTreeY[i])
   }
   //drawMufflo
   for (let i = 0; i < muffArr.length;i++){
@@ -169,62 +200,74 @@ function draw() {
 
 //CaveShade and Sun
 if(!isAboveGround){
-  fill(40,40,70,150);
-  rect(0,0,700,700);
+  for(let i = 0;i<14;i++){
+    for(let j = 0;j<14;j++){
+      if(inv.curItem == 5){
+      if(dist(i,j,player.x,player.y)<2.4){
+        lightArr[i][j] = 1;
+      }
+    }
+    for(let q = 0;q < campFirePlaceArr.length;q++){
+      if(dist(i,j,campFirePlaceArr[q][0],campFirePlaceArr[q][1])<2.4){
+       lightArr[i][j] = 1;
+      }
+    }
+    }
+  }
+
+  for(let i = 0;i<14;i++){
+    for(let j = 0;j<14;j++){
+      if(lightArr[i][j] == 1){
+        colorMode(RGB);
+        fill(255,255,0,20+ gameClock%15);
+      }
+      else {
+        colorMode(HSB);
+        fill(0,0,0,.94);
+      }
+      lightArr[i][j] = 0;
+      rect(50*i,50*j,50,50);
+    }}
+colorMode(RGB);
 }
 else{
 //fill(207,181,59,10);
 
 if(timeOfDay < 6){
+
   colorMode(HSB);
   fill(0,0,0,.2+(6-timeOfDay)/12);
   for(let i = 0;i<14;i++){
     for(let j = 0;j<14;j++){
-
       if(inv.curItem == 5){
-        // if(i==player.x -1 ||i==player.x +1 ||i==player.x){
-        //   if(j==player.y -1 ||j==player.y +1 ||j==player.y){
-        //     colorMode(RGB);
-        //     fill(255,255,0,20+ gameClock%10);
-        //   }else {
-        //     colorMode(HSB);
-        //     fill(0,0,0,.2+(6-timeOfDay)/12);}
-        // }else {
-        //   colorMode(HSB);
-        //   fill(0,0,0,.2+(6-timeOfDay)/12);}
-        if(dist(i,j,player.x,player.y)<4){
-          colorMode(RGB);
-          fill(255,255,0,20+ gameClock%10);
-        }else {
-           colorMode(HSB);
-           fill(0,0,0,.2+(6-timeOfDay)/12);
-        }
-
+      if(dist(i,j,player.x,player.y)<2.4){
+        lightArr[i][j] = 1;
       }
-      for(let q = 0;q < campFirePlaceArr.length;q++){
-        if(dist(i,j,campFirePlaceArr[q][0],campFirePlaceArr[q][1])<2.5){
-          colorMode(HSB);
-          fill(0,0,0,0);
-        }
-        else fill(0,0,0,.2+(6-timeOfDay)/12);
-
-
-
-
-      // let curTile = foreGroundmapTiles[i][j];
-      // if(curTile == campfire){
-      //   //console.log("FIll")
-      //   colorMode(HSB);
-      //   fill(0,0,0,0);
-      //
-      // }else fill(0,0,0,.2+(6-timeOfDay)/12);
-
+    }
+    for(let q = 0;q < campFirePlaceArr.length;q++){
+      if(dist(i,j,campFirePlaceArr[q][0],campFirePlaceArr[q][1])<1.3){
+       lightArr[i][j] = 1;
       }
+    }
 
-      rect(50*i,50*j,50,50);
+
 
     }
   }
+  for(let i = 0;i<14;i++){
+    for(let j = 0;j<14;j++){
+      if(lightArr[i][j] == 1){
+        colorMode(RGB);
+        fill(255,255,0,20+ gameClock%15);
+      }
+      else {
+        colorMode(HSB);
+        fill(0,0,0,.2+(6-timeOfDay)/12);
+      }
+      lightArr[i][j] = 0;
+      rect(50*i,50*j,50,50);
+    }}
+
 
   colorMode(RGB);}
 }
@@ -308,7 +351,7 @@ function resizeAssets(){
   grass2.resize(50,50);
   dirt.resize(50,50);
   tree.resize(50,50);
-  tree2.resize(50,50);
+  tree2.resize(100,100);
   rock.resize(50,50);
   rock2.resize(50,50);
   bush.resize(50,50);
@@ -330,6 +373,7 @@ function resizeAssets(){
   shovel.resize(40,40);
   logs.resize(50,50);
   campfire.resize(50,50);
+  campfireCraft.resize(100,100);
   tripShroom.resize(50,50);
   cabin.resize(100,100);
   wand.resize(55,60);
@@ -356,6 +400,9 @@ function resizeAssets(){
   reeds.resize(40,40);
   treeDead.resize(65,65);
   torch.resize(50,50);
+  bigShroom.resize(100,100);
+  floor1.resize(50,50);
+  midMush.resize(50,50);
 }
 
 function windowResized() {
@@ -377,9 +424,11 @@ function spawnMap(){
   if(isAboveGround == true){
     //CreateWoodlandsBiome();
     let m = (random(0,100));
-    if (m <= 60)CreateWoodlandsBiome();
+
+    if (m <= 50)CreateWoodlandsBiome();
     else if (m <= 80 )CreateLakeBiome();
-    else CreateDesertBiome();
+    else if (m <= 90 )CreateDesertBiome();
+    else CreateMushBiome();
 
 
 
@@ -411,6 +460,7 @@ function setupMapGrid(){
     mapTiles[x] = [];
     midGroundTiles[x] = [];
     foreGroundmapTiles[x] = [];
+    lightArr[x] = [];
   }
 }
 function setupMapGroups(){
@@ -490,6 +540,7 @@ function CreateWoodlandsBiome(){
       if (r<-.3){
         tileType = grass2;
       }else tileType = grass;
+    if (foreGroundmapTiles[i][j]!=transparent){
     if (r>0 && r <.1)foreGroundmapTiles[i][j] = bbush;
     if (r>.2 && r < 1){
       if(r>=.2&&r<.6)foreGroundmapTiles[i][j] = tree;
@@ -498,13 +549,38 @@ function CreateWoodlandsBiome(){
           foreGroundmapTiles[i][j] = tripShroom;
 
         }
-        else foreGroundmapTiles[i][j] = tree2;
+        else {
+          if(i < 13 && j<13){
+          if(foreGroundmapTiles[i][j] == undefined){
+            if(foreGroundmapTiles[i+1][j] == undefined){
+              if(foreGroundmapTiles[i][j+1] == undefined){
+                if(foreGroundmapTiles[i+1][j+1] == undefined){
+
+              foreGroundmapTiles[i][j] = tree2;
+              foreGroundmapTiles[i+1][j] = transparent;
+              foreGroundmapTiles[i][j+1] = transparent;
+              foreGroundmapTiles[i+1][j+1] = transparent;
+
+              }
+            }
+
+            }
+
+          }
+        }
+
+
+
+
+        }
       }
     if (r>.9){
     if(r < .95)foreGroundmapTiles[i][j] = rock;
     else foreGroundmapTiles[i][j] = rock2;
   }
   }
+}
+
   }if(r < -.8) tileType = dirt;
       mapTiles[i][j] = tileType;
       }
@@ -533,6 +609,55 @@ function CreateDesertBiome(){
       }
     }
     spawnAnimals(2);
+}
+
+function CreateMushBiome(){
+  for (let i = 0; i<14;i++){
+    for (let j = 0; j<14;j++){
+      //midGroundTiles[i][j] = grassMid;
+    let r = random(0,100);
+    let tileType;
+        if (r<100) tileType = floor1;
+
+          //tileType = dirt;
+            if (foreGroundmapTiles[i][j]!=transparent){
+            if(r<15) foreGroundmapTiles[i][j] = tripShroom;
+            else if (r<25) {
+              if(i < 13 && j<13){
+              if(foreGroundmapTiles[i][j] == undefined){
+                if(foreGroundmapTiles[i+1][j] == undefined){
+                  if(foreGroundmapTiles[i][j+1] == undefined){
+                    if(foreGroundmapTiles[i+1][j+1] == undefined){
+
+                  foreGroundmapTiles[i][j] = bigShroom;
+                  foreGroundmapTiles[i+1][j] = transparent;
+                  foreGroundmapTiles[i][j+1] = transparent;
+                  foreGroundmapTiles[i+1][j+1] = transparent;
+
+                  }
+                }
+
+                }
+
+              }
+            }
+            }
+            else if(r<35){
+              midGroundTiles[i][j]=midMush;
+            }
+        }
+
+
+
+          //
+          // else if (r<35) foreGroundmapTiles[i][j] = cactus3;
+
+        mapTiles[i][j] = tileType;
+
+      //mapTiles[i][j] = floor1;
+      }
+    }
+    //spawnAnimals(2);
 }
 
 function CreateLakeBiome(){
@@ -574,11 +699,28 @@ function CreateLakeBiome(){
         }
 
         if(tileType == grass || tileType == grass2){
+          if (foreGroundmapTiles[i][j]!=transparent){
           if(r<30){
             foreGroundmapTiles[i][j] = tree;
           }
           else if (r<35){
-            foreGroundmapTiles[i][j] = tree2;
+            if(i < 13 && j<13){
+            if(foreGroundmapTiles[i][j] == undefined){
+              if(foreGroundmapTiles[i+1][j] == undefined){
+                if(foreGroundmapTiles[i][j+1] == undefined){
+                  if(foreGroundmapTiles[i+1][j+1] == undefined){
+
+                foreGroundmapTiles[i][j] = tree2;
+                foreGroundmapTiles[i+1][j] = transparent;
+                foreGroundmapTiles[i][j+1] = transparent;
+                foreGroundmapTiles[i+1][j+1] = transparent;
+              }
+                }
+              }
+
+              }
+
+            }
           }
           else if(r<40){
             foreGroundmapTiles[i][j] = bbush;
@@ -586,6 +728,8 @@ function CreateLakeBiome(){
           else if(r<45){
             foreGroundmapTiles[i][j] = rock2;
           }
+
+        }
         }
         mapTiles[i][j] = tileType;
 
