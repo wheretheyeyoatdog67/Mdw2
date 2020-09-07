@@ -1,5 +1,5 @@
 class animal{
-  constructor(curMapRX,curMapRY,region){
+  constructor(curMapRX,curMapRY,region,isFish,x,y){
     this.x = floor(random(1,13));
     this.y = floor(random(1,13));
     this.randomTimerOffset = random(0,100);
@@ -13,7 +13,12 @@ class animal{
     this.isFollowing = false;
     this.followTic = 0;
     this.attackDamage = 10;
-
+    this.isFishStat = isFish
+    if(isFish){
+      this.x =x;
+      this.y = y;
+    }
+if(!isFish){
         if(this.type == 1){
           let l = floor(random(0,3));
           if( l == 0){
@@ -33,7 +38,7 @@ class animal{
       this.picRight =snakePicR;
     }
     else if(this.type == 3){
-      let l = floor(random(0,6));
+      let l = floor(random(0,4));
       console.log(l)
       if( l == 0){
       this.picLeft =muffloPicL;
@@ -42,23 +47,21 @@ class animal{
     this.picLeft =sheepL;
     this.picRight =sheepR;
   }
-  else if( l == 2 || l == 3 || l == 4){
-    if(mapTiles[this.x][this.y] == water1){
-      console.log("HI")
-      this.picLeft =fishL;
-      this.picRight =fishR;
-    }
-    else{
-    this.picLeft =ratL;
-    this.picRight =ratR;
-    }
-}
+
   else{
   this.picLeft =ratL;
   this.picRight =ratR;
   }
     }
+
+}
+else {
+  this.picLeft =fishL;
+  this.picRight =fishR;
+}
+
   }
+
 
 draw(){
   if (this.spawnedRegionX == curMapRX &&  this.spawnedRegionY ==curMapRY) {

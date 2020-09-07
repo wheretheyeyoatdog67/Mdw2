@@ -57,6 +57,7 @@ if(!player.isLayingDown){
   player.isLayingDown = false;
   foreGroundmapTiles[player.x][player.y] = hamockL;
   foreGroundmapTiles[player.x+1][player.y] = hamockR;
+  timeMult = 250;
 }
 if (keyCode ==67) {
   if(craft.isCraft == true){
@@ -160,6 +161,7 @@ if(foreGroundmapTiles[xCoord][yCoord] == hamockR){
   player.isLayingDown = true;
   player.x = xCoord-1;
   player.y = yCoord;
+  timeMult = 10;
 }
 if(foreGroundmapTiles[xCoord][yCoord] == hamockL){
   foreGroundmapTiles[xCoord][yCoord] = playerLayingDownL;
@@ -167,6 +169,7 @@ if(foreGroundmapTiles[xCoord][yCoord] == hamockL){
   player.isLayingDown = true;
   player.x = xCoord;
   player.y = yCoord;
+  timeMult = 10;
 }
 //
 //if(foreGroundmapTiles[xCoord][yCoord] == tree2||foreGroundmapTiles[xCoord-1][yCoord]==tree2||foreGroundmapTiles[xCoord][yCoord-1]==tree2||foreGroundmapTiles[xCoord-1][yCoord-1]==tree2){
@@ -241,36 +244,37 @@ else if(inv.invantArray[inv.curItem-1] == coalOre){
   }
 
 }
+if(inv.invantArray[inv.curItem-1] == spearInv){
 
-
+  for(let i = 0;i< muffArr.length;i++){
+    if(muffArr[i].isFishStat  == true){
+      console.log("hi")
+    if (muffArr[i].x == xCoord && muffArr[i].y == yCoord){
+      muffArr.splice(i,1);
+      player.pickUpNoGroundItem(fishL,1);
+    }
+    }
+  }
 }
-
-if(inv.invantArray[inv.curItem-1] == tripShroom){
-  mushRoomTrip = true;
-  tripClock = 0;
-  triplevel += 1;
-  player.hungerVal -= 5;
-  invArrItemCount[inv.curItem-1] -= 1;
-}
-if(inv.invantArray[inv.curItem-1] == berries){
-  player.hungerVal += 10;
-  if( player.hungerVal>480)player.hungerVal = 480;
-  invArrItemCount[inv.curItem-1] -= 1;
-}
-if(inv.invantArray[inv.curItem-1] == rock){
-  midGroundTiles[xCoord][yCoord] = cobbleroad;
-  invArrItemCount[inv.curItem-1] -= 1;
-
-}
-if(inv.invantArray[inv.curItem-1] == wandInv){
-  player.x = xCoord;
-  player.y = yCoord;
-  player.teleport(xCoord,yCoord,100);
-  player.hungerVal -= 30;
+if(inv.invantArray[inv.curItem-1] == fishL){
+  if(foreGroundmapTiles[xCoord][yCoord] = campfire){
+    player.pickUpNoGroundItem(fishCooked,1);
+    invArrItemCount[inv.curItem-1] -= 1;
+  }
 }
 if(inv.invantArray[inv.curItem-1] == campfire){
   foreGroundmapTiles[xCoord][yCoord] = campfire;
   campFirePlaceArr.push([xCoord,yCoord]);
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+if(inv.invantArray[inv.curItem-1] == dirtInv){
+  mapTiles[xCoord][yCoord] = dirt;
+
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+if(inv.invantArray[inv.curItem-1] == wheetSeed && mapTiles[xCoord][yCoord] == dirt){
+  midGroundTiles[xCoord][yCoord] = wheet1
+
   invArrItemCount[inv.curItem-1] -= 1;
 }
 if(inv.invantArray[inv.curItem-1] == furnaceOffInv){
@@ -300,6 +304,45 @@ if(inv.invantArray[inv.curItem-1] == hamock){
 
   //invArrItemCount[inv.curItem-1] -= 1;
 }
+if(midGroundTiles[xCoord][yCoord] == wheet3){
+  player.pickUpNoGroundItem(wheetInv,floor(random(1,5)));
+  player.pickUpNoGroundItem(wheetSeed,floor(random(1,5)));
+  midGroundTiles[xCoord][yCoord] = undefined;
+
+}
+}
+
+
+if(inv.invantArray[inv.curItem-1] == tripShroom){
+  mushRoomTrip = true;
+  tripClock = 0;
+  triplevel += 1;
+  player.hungerVal -= 5;
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+if(inv.invantArray[inv.curItem-1] == berries){
+  player.hungerVal += 10;
+  if( player.hungerVal>480)player.hungerVal = 480;
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+if(inv.invantArray[inv.curItem-1] == fishCooked){
+  player.hungerVal += 100;
+  if( player.hungerVal>480)player.hungerVal = 480;
+  invArrItemCount[inv.curItem-1] -= 1;
+}
+if(inv.invantArray[inv.curItem-1] == rock){
+  midGroundTiles[xCoord][yCoord] = cobbleroad;
+  invArrItemCount[inv.curItem-1] -= 1;
+
+}
+if(inv.invantArray[inv.curItem-1] == wandInv){
+  player.x = xCoord;
+  player.y = yCoord;
+  player.teleport(xCoord,yCoord,100);
+  player.hungerVal -= 30;
+}
+
+
 
 if(craft.isCraft){
   if(craft.cabinCraft == true){
@@ -338,7 +381,6 @@ player.pickUpNoGroundItem(craft.invIcon,1);
 }
 
 
-
 function mouseWheel(event) {
 
   if(event.delta < 0){
@@ -352,6 +394,4 @@ function mouseWheel(event) {
       inv.curItem = 18;
     }
     else inv.curItem += 1};
-
-
 }

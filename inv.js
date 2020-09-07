@@ -91,8 +91,11 @@ invantItems(){
   this.invantArray[2] = axe1;
   this.invantArray[3] = wandInv;
   this.invantArray[4] = torch;
-  this.invantArray[5] = hamock;
-  this.invantArray[6] = furnaceOffInv;
+  this.invantArray[5] = spearInv;
+  this.invantArray[6] = hamock;
+  this.invantArray[7] = furnaceOffInv;
+  this.invantArray[8] = wheetSeed;
+
 
 
 }
@@ -114,7 +117,20 @@ displayItems(){
         offsetY = 9;
 
       }
+      else if(this.invantArray[i] == wheetSeed){
+        offsetY = 16;
+
+      }
       else if(this.invantArray[i] == hamock){
+        offsetY = 10;
+
+      }
+      else if(this.invantArray[i] == wheetInv){
+        offsetY = 19;
+        offsetX = 4;
+
+      }
+      else if(this.invantArray[i] == spearInv){
         offsetY = 10;
 
       }
@@ -124,6 +140,10 @@ displayItems(){
       }
       else if(this.invantArray[i] == berries){
         offsetX = 4;
+        offsetY = 10;
+      }
+      else if(this.invantArray[i] == fishL || this.invantArray[i] == fishCooked){
+
         offsetY = 10;
       }
       else if(this.invantArray[i] == furnaceOffInv){
@@ -188,7 +208,7 @@ itemCount(){
       stroke(0);
       if(i<=8){
       text(invArrItemCount[i]+1,740,265+50*i);}
-      else text(invArrItemCount[i]+1,795,-215+50*i);
+      else text(invArrItemCount[i]+1,795,-190+50*i);
       noStroke();
 
     }

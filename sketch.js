@@ -29,7 +29,7 @@ let tripClock = 0;
 let triplevel = 0;
 let introTimer = 0;
 let lightArr = [];
-
+let timeMult = 250;
 
 
 
@@ -79,6 +79,7 @@ function preload() {
   reeds = loadImage('assets/tiles/reeds.png');
   fishL =loadImage('assets/tiles/lake/fishL.png');
   fishR =loadImage('assets/tiles/lake/fishR.png');
+  fishCooked =loadImage('assets/tiles/lake/fishCooked.png');
   furnaceOn = loadImage('assets/tiles/furnace.png');
   furnaceOff =  loadImage('assets/tiles/furnaceOff.png');
   furnaceOffInv =  loadImage('assets/tiles/furnaceOffInv.png');
@@ -114,12 +115,21 @@ function preload() {
   song = loadSound('assets/music/mainSong.mp3');
 
   torch = loadImage('assets/tools/torch.png');
+  spearInv = loadImage('assets/tools/spearInv.png');
+  spear = loadImage('assets/tools/spear.png');
   chain = loadImage('assets/crafting/chain.png');
 
 
   //intro
   introPic = loadImage('assets/intro/pic.png');
   //vid.size(0, 200);
+
+  //Plants
+  wheetSeed = loadImage('assets/seeds/wheetseed.png');
+  wheetInv = loadImage('assets/seeds/wheetInv.png');
+  wheet1 = loadImage('assets/seeds/wheet1.png');
+  wheet2 = loadImage('assets/seeds/wheet2.png');
+  wheet3 = loadImage('assets/seeds/wheet3.png');
 
 }
 
@@ -180,6 +190,11 @@ function draw() {
   let furY = [];
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
+      if(midGroundTiles[i][j]==wheet1){
+        plantUpdate(wheet1,i,j);
+      }else if(midGroundTiles[i][j]==wheet2){
+        plantUpdate(wheet2,i,j);
+      }
       drawTile(mapTiles[i][j],i,j);
       if(midGroundTiles[i][j]!=undefined)drawTile(midGroundTiles[i][j],i,j);
       let curT = foreGroundmapTiles[i][j];
@@ -452,12 +467,21 @@ function resizeAssets(){
   coalOre.resize(50,50);
   fishL.resize(50,50);
   fishR.resize(50,50);
+  spear.resize(50,50);
+  spearInv.resize(50,50);
   furnaceOn.resize(100,100);
   furnaceOn.resize(100,100);
   furnaceOff.resize(100,100);
   furnaceOff.resize(100,100);
-
+  fishCooked.resize(50,50);
   introPic.resize(700,700);
+
+
+  wheetSeed.resize(50,50);
+  wheetInv.resize(40,40);
+  wheet1.resize(50,50);
+  wheet2.resize(50,50);
+  wheet3.resize(50,50);
 }
 
 function windowResized() {
@@ -582,12 +606,12 @@ function setupMapGroups(){
 function spawnAnimals(biome){
   for (let i = 0; i < random(0,6);i++){
     if(biome ==1){
-    muffArr[i] = new animal(curMapRX,curMapRY,1);}
+    muffArr[i] = new animal(curMapRX,curMapRY,1,false,0,0);}
     else if(biome == 2){
-    muffArr[i] = new animal(curMapRX,curMapRY,2);
+    muffArr[i] = new animal(curMapRX,curMapRY,2,false,0,0);
     }
     else if(biome == 3){
-    muffArr[i] = new animal(curMapRX,curMapRY,3);
+    muffArr[i] = new animal(curMapRX,curMapRY,3,false,0,0);
     }
   }
 }
@@ -647,7 +671,7 @@ function CreateWoodlandsBiome(){
     midGroundTiles[i][j]=grassMid;
     }
     let tileType;
-    if (r>-.8&&l<=160){
+    if (r>-.8&&l<=170){
       if (r<-.3){
         tileType = grass2;
       }else tileType = grass;
@@ -694,7 +718,7 @@ function CreateWoodlandsBiome(){
 
   }if(r < -.8) tileType = dirt;
 
-      if(l>160){
+      if(l>170){
         if(foreGroundmapTiles[i][j]==transparent){
           mapTiles[i][j] = grass;
         }else
@@ -709,7 +733,7 @@ function CreateWoodlandsBiome(){
 
 
       }
-      yofff +=.1
+      yofff +=.6
     }
   spawnAnimals(1);
 }
@@ -865,6 +889,15 @@ function CreateLakeBiome(){
       }
     }
     spawnAnimals(3);
+    for(let i = 0;i<14;i++){
+      for(let j = 0;j<14;j++){
+        if(mapTiles[i][j] == water1){
+          if(random(0,100)<30){
+            muffArr.push(new animal(curMapRX,curMapRY,3,true,i,j));
+          }
+        }
+      }
+    }
 }
 
 function intro(){
@@ -873,7 +906,7 @@ function intro(){
 }
 
 function timeOfDayCalc(){
-  if (gameClock % 250 == 0){
+  if (gameClock % timeMult == 0){
     if (timeOfDay > 12){
       timeDir*=-1
     }else if (timeOfDay < 0){
@@ -883,7 +916,19 @@ function timeOfDayCalc(){
 
   }
 }
+function plantUpdate(planyType,i,j){
+  let l = random(0,300);
+    if (l>299.8){
+      if (planyType == wheet1){
+        midGroundTiles[i][j] = wheet2;
+      }
+      if (planyType == wheet2){
+        midGroundTiles[i][j] = wheet3;
+      }
 
+    }
+
+}
 
 
 function touchStarted() {
