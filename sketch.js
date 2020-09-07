@@ -1,7 +1,7 @@
 let width = 900;
 let height = 700;
-let grass;
-let dirt;
+let introState = false;
+
 let curMapRX = 2;
 let curMapRY = 2;
 let mapGroups = [];
@@ -27,7 +27,7 @@ var inc = 0;
 var incDir = 1;
 let tripClock = 0;
 let triplevel = 0;
-
+let introTimer = 0;
 let lightArr = [];
 
 
@@ -41,7 +41,7 @@ function preload() {
   dirtInv = loadImage('assets/tiles/dirtInv.png');
   dirtHole = loadImage('assets/tiles/dirtHole.png');
   cobbleroad = loadImage('assets/tiles/cobbleroad.png');
-  tree = loadImage('assets/tiles/tree.png');
+  tree = loadImage('assets/tiles/tree2.png');
   tree2 = loadImage('assets/tiles/tree2.png');
   rock = loadImage('assets/tiles/rock.png');
   rock2 = loadImage('assets/tiles/rock2.png');
@@ -55,6 +55,11 @@ function preload() {
   grassMid = loadImage('assets/tiles/grassMid.png');
   following = loadImage('assets/tiles/angry.png');
   treeDead = loadImage('assets/tiles/treeDead.png');
+  hamock = loadImage('assets/tiles/hamock.png');
+  playerLayingDownL = loadImage('assets/tiles/2wide/playerLayingDownL.png');
+  playerLayingDownR = loadImage('assets/tiles/2wide/playerLayingDownR.png');
+  hamockL = loadImage('assets/tiles/2wide/hamockL.png');
+  hamockR = loadImage('assets/tiles/2wide/hamockR.png');
   //Animals
   muffloPicR = loadImage('assets/tiles/mufflo.png');
   muffloPicL = loadImage('assets/tiles/muffloL.png');
@@ -72,11 +77,21 @@ function preload() {
   shells3 = loadImage('assets/tiles/lake/shells3.png');
   shells4 = loadImage('assets/tiles/lake/shells4.png');
   reeds = loadImage('assets/tiles/reeds.png');
-
+  fishL =loadImage('assets/tiles/lake/fishL.png');
+  fishR =loadImage('assets/tiles/lake/fishR.png');
+  furnaceOn = loadImage('assets/tiles/furnace.png');
+  furnaceOff =  loadImage('assets/tiles/furnaceOff.png');
+  furnaceOffInv =  loadImage('assets/tiles/furnaceOffInv.png');
   //MUSHROOM Biome
   floor1 = loadImage('assets/tiles/mush/floor1.png');
   bigShroom = loadImage('assets/tiles/shroom2.png')
   midMush = loadImage('assets/tiles/mushroom.png')
+
+  //UNDERGROUND
+  stalgmite = loadImage('assets/tiles/underground/stalagmite.png')
+  ironOre = loadImage('assets/tiles/underground/ironOre.png')
+  coalOre = loadImage('assets/tiles/underground/coalOre.png')
+
 
   playerPic = loadImage('assets/tiles/player.png');
   invPic = loadImage('assets/invant.png');
@@ -100,6 +115,12 @@ function preload() {
 
   torch = loadImage('assets/tools/torch.png');
   chain = loadImage('assets/crafting/chain.png');
+
+
+  //intro
+  introPic = loadImage('assets/intro/pic.png');
+  //vid.size(0, 200);
+
 }
 
 
@@ -108,12 +129,13 @@ function setup() {
 
   var cnv =createCanvas(width, height);
   cnv.style('display', 'block');
-  background(70, 70, 90);
+
   resizeAssets();
   player = new player();
   inv = new inv();
   tool = new tool(player);
   craft = new craftingWindow();
+
   setupMapGrid();
   setupMapGroups();
   spawnMap();
@@ -135,7 +157,10 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  if(introState == true){
+    intro();
+  }
+  else{
   timeOfDayCalc();
   if (!song.isPlaying()){
     song.play();}
@@ -149,6 +174,10 @@ function draw() {
   let bigShroomPosJ = [];
   let bigTreeX = [];
   let bigTreeY = [];
+  let stagX = [];
+  let stagY = [];
+  let furX =[];
+  let furY = [];
   for (let i = 0; i<14;i++){
     for (let j = 0; j<14;j++){
       drawTile(mapTiles[i][j],i,j);
@@ -167,7 +196,14 @@ function draw() {
           bigTreeX.push(i);
           bigTreeY.push(j);
         }
-
+        if(curT == stalgmite){
+          stagX.push(i);
+          stagY.push(j);
+        }
+        if(curT == furnaceOff || curT == furnaceOn){
+          furX.push(i);
+          furY.push(j);
+        }
         else drawTile(foreGroundmapTiles[i][j],i,j)
         }
       }
@@ -179,8 +215,14 @@ function draw() {
   for (let i = 0; i<bigShroomPosI.length;i++){
     drawTile(foreGroundmapTiles[bigShroomPosI[i]][bigShroomPosJ[i]],bigShroomPosI[i],bigShroomPosJ[i])
   }
+  for (let i = 0; i<stagX.length;i++){
+    drawTile(foreGroundmapTiles[stagX[i]][stagY[i]],stagX[i],stagY[i])
+  }
   for (let i = 0; i<bigTreeX.length;i++){
     drawTile(foreGroundmapTiles[bigTreeX[i]][bigTreeY[i]],bigTreeX[i],bigTreeY[i])
+  }
+  for (let i = 0; i<furX.length;i++){
+    drawTile(foreGroundmapTiles[furX[i]][furY[i]],furX[i],furY[i])
   }
   //drawMufflo
   for (let i = 0; i < muffArr.length;i++){
@@ -191,7 +233,7 @@ function draw() {
     floorItemArr[i].update();
   }
   player.draw();
-  tool.update(player);
+  if(!player.isLayingDown)tool.update(player);
   inv.drawInv();
 
 
@@ -335,7 +377,7 @@ if(craft.isCraft == true){
 
 
 }
-
+}
 
 
 
@@ -404,6 +446,18 @@ function resizeAssets(){
   floor1.resize(50,50);
   midMush.resize(50,50);
   following.resize(20,20);
+  hamock.resize(50,80);
+  stalgmite.resize(100,100);
+  ironOre.resize(50,50);
+  coalOre.resize(50,50);
+  fishL.resize(50,50);
+  fishR.resize(50,50);
+  furnaceOn.resize(100,100);
+  furnaceOn.resize(100,100);
+  furnaceOff.resize(100,100);
+  furnaceOff.resize(100,100);
+
+  introPic.resize(700,700);
 }
 
 function windowResized() {
@@ -437,14 +491,60 @@ function spawnMap(){
 }
 else{
   //underground
+  var yoff = gameClock;
+
   for (let i = 0; i<14;i++){
+    var xoff =gameClock;
+
     for (let j = 0; j<14;j++){
-        mapTiles[i][j] = underGFloor;
-        let l = caveNoise(i*j+1);
-        if (l < 45){
-          foreGroundmapTiles[i][j] = underGRock;
+      var index = (i+j*width)*4;
+      var r = noise(xoff,yoff)*255
+      xoff += .6;
+      //arr[i][y][0] = r;
+      if(r>145){
+        mapTiles[i][j] = water1
+      }else mapTiles[i][j] = underGFloor;
+        //let l = caveNoise(i*j+1);
+        let  l = random(0,100);
+        if(foreGroundmapTiles[i][j]!=transparent){
+        // if (l < 45){
+        //   foreGroundmapTiles[i][j] = underGRock;
+        // }
+
+
+        if(l<15){
+        if(i < 13 && j<13 ){
+        if(foreGroundmapTiles[i][j] == undefined&& mapTiles[i][j]!= water1){
+          if(foreGroundmapTiles[i+1][j] == undefined){
+            if(foreGroundmapTiles[i][j+1] == undefined){
+              if(foreGroundmapTiles[i+1][j+1] == undefined && mapTiles[i+1][j+1]!= water1){
+
+            foreGroundmapTiles[i][j] = stalgmite;
+            foreGroundmapTiles[i+1][j] = transparent;
+            foreGroundmapTiles[i][j+1] = transparent;
+            foreGroundmapTiles[i+1][j+1] = transparent;
+
+            }
+          }
+
+          }
+
         }
       }
+    }
+
+    else if(l<17&&mapTiles[i][j]!= water1){
+      foreGroundmapTiles[i][j] = ironOre
+    }
+    else if (l < 19&&mapTiles[i][j]!= water1){
+      foreGroundmapTiles[i][j] = coalOre
+    }
+      }
+
+
+
+      }
+      yoff += .2
     }
   }
 
@@ -486,6 +586,9 @@ function spawnAnimals(biome){
     else if(biome == 2){
     muffArr[i] = new animal(curMapRX,curMapRY,2);
     }
+    else if(biome == 3){
+    muffArr[i] = new animal(curMapRX,curMapRY,3);
+    }
   }
 }
 
@@ -506,10 +609,11 @@ function campfireLight(x,y){
   rect(x*50,(y+1)*50,50,50);
 }
 function waterMovement(x,y){
+  if(isAboveGround==true){
   noStroke();
   fill(0,0,255,(5*x+5*y)+ gameClock%10);
   rect(x*50,y*50,50,50);
-
+}
 }
 
 
@@ -529,15 +633,21 @@ function spawnCabin(x,y){
 }
 
 function CreateWoodlandsBiome(){
+  var yofff = gameClock;
   for (let i = 0; i<14;i++){
+    var xofff = gameClock;
     for (let j = 0; j<14;j++){
+      var index = (i+j*width)*4;
+      var l = noise(xofff,yofff)*255
+      xofff += .6;
+      //arr[i][y][0] = r;
 
     let r = random(-1,1);
-    if(r > -.5 && r < -.3){
+    if(r > -.5 && r < -.3&& l<160){
     midGroundTiles[i][j]=grassMid;
     }
     let tileType;
-    if (r>-.8){
+    if (r>-.8&&l<=160){
       if (r<-.3){
         tileType = grass2;
       }else tileType = grass;
@@ -583,8 +693,23 @@ function CreateWoodlandsBiome(){
 }
 
   }if(r < -.8) tileType = dirt;
-      mapTiles[i][j] = tileType;
+
+      if(l>160){
+        if(foreGroundmapTiles[i][j]==transparent){
+          mapTiles[i][j] = grass;
+        }else
+        mapTiles[i][j] = water1
       }
+      else
+
+
+      mapTiles[i][j] = tileType;
+
+
+
+
+      }
+      yofff +=.1
     }
   spawnAnimals(1);
 }
@@ -684,15 +809,16 @@ function CreateLakeBiome(){
           }else if (r<11){
             midGroundTiles[i][j] = shells3;
           }
-          else if (r<14){
-            midGroundTiles[i][j] = shells4;
+          else if (r<25){
+            midGroundTiles[i][j] = reeds;
+            //midGroundTiles[i][j] = shells4;
           }
         }
         else {
-          let l = random(0,100)
-            if(l>60){
-              midGroundTiles[i][j] = reeds;
-            }
+          // let l = random(0,100)
+          //   if(l>60){
+          //     midGroundTiles[i][j] = reeds;
+          //   }
 
           tileType = water1;
 
@@ -738,10 +864,13 @@ function CreateLakeBiome(){
 
       }
     }
-    spawnAnimals(1);
+    spawnAnimals(3);
 }
 
+function intro(){
+  image(introPic,0,0);
 
+}
 
 function timeOfDayCalc(){
   if (gameClock % 250 == 0){
@@ -754,6 +883,8 @@ function timeOfDayCalc(){
 
   }
 }
+
+
 
 function touchStarted() {
 getAudioContext().resume()

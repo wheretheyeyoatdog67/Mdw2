@@ -3,11 +3,14 @@ function keyPressed() {
 //TEMP GO undergroundFloor
   if (keyCode ==32) {
     if(isAboveGround == true){
-      if(mapTiles[player.x][player.y] == dirtHole)isAboveGround = false}
-    else isAboveGround = true;
+      if(mapTiles[player.x][player.y] == dirtHole){isAboveGround = false
+        campFirePlaceArr=[];}}
+    else {campFirePlaceArr=[];
+      isAboveGround = true;}
   }
 
 //MOVEMENT WASD
+if(!player.isLayingDown){
   if (keyCode ==65) {
     if (!player.playerCollision(65)){
 
@@ -50,6 +53,11 @@ function keyPressed() {
         player.hungerVal -=1;
     }
   }
+}else if( keyCode ==65 ||keyCode ==68||keyCode ==83|| keyCode ==87){
+  player.isLayingDown = false;
+  foreGroundmapTiles[player.x][player.y] = hamockL;
+  foreGroundmapTiles[player.x+1][player.y] = hamockR;
+}
 if (keyCode ==67) {
   if(craft.isCraft == true){
     craft.isCraft = false;
@@ -125,6 +133,7 @@ if (keyCode >=49 && keyCode <=57) {
 
 
 function mouseClicked() {
+  if(introState==true)introState = false;
 let xCoord = floor(mouseX/50);
 let yCoord = floor(mouseY/50);
 console.log(mouseX);
@@ -140,6 +149,24 @@ if(dist(xCoord,yCoord,player.x,player.y)==1){
 if(foreGroundmapTiles[xCoord][yCoord] == tree){
   player.playerCutTree(xCoord,yCoord);
 
+}
+if(foreGroundmapTiles[xCoord][yCoord] == ironOre || foreGroundmapTiles[xCoord][yCoord] == coalOre){
+  player.playerMineOre(xCoord,yCoord,foreGroundmapTiles[xCoord][yCoord]);
+
+}
+if(foreGroundmapTiles[xCoord][yCoord] == hamockR){
+  foreGroundmapTiles[xCoord][yCoord] = playerLayingDownR;
+  foreGroundmapTiles[xCoord-1][yCoord] = playerLayingDownL;
+  player.isLayingDown = true;
+  player.x = xCoord-1;
+  player.y = yCoord;
+}
+if(foreGroundmapTiles[xCoord][yCoord] == hamockL){
+  foreGroundmapTiles[xCoord][yCoord] = playerLayingDownL;
+  foreGroundmapTiles[xCoord+1][yCoord] = playerLayingDownR;
+  player.isLayingDown = true;
+  player.x = xCoord;
+  player.y = yCoord;
 }
 //
 //if(foreGroundmapTiles[xCoord][yCoord] == tree2||foreGroundmapTiles[xCoord-1][yCoord]==tree2||foreGroundmapTiles[xCoord][yCoord-1]==tree2||foreGroundmapTiles[xCoord-1][yCoord-1]==tree2){
@@ -199,6 +226,21 @@ else if(inv.invantArray[inv.curItem-1] == torch){
   campFirePlaceArr.push([xCoord,yCoord])
   //invArrItemCount[inv.curItem-1] -= 1;
 }
+else if(inv.invantArray[inv.curItem-1] == coalOre){
+
+  if(foreGroundmapTiles[xCoord][yCoord] == furnaceOff || foreGroundmapTiles[xCoord][yCoord] == furnaceOn)
+  {
+    console.log("hhi")
+    foreGroundmapTiles[xCoord][yCoord] = furnaceOn
+    //invArrItemCount[inv.curItem-1] -= 1;
+  }
+  else if(foreGroundmapTiles[xCoord-1][yCoord] == furnaceOff || foreGroundmapTiles[xCoord-1][yCoord] == furnaceOn){
+    foreGroundmapTiles[xCoord-1][yCoord] = furnaceOn
+    //invArrItemCount[inv.curItem-1] -= 1;
+    console.log("hhi2")
+  }
+
+}
 
 
 }
@@ -230,6 +272,33 @@ if(inv.invantArray[inv.curItem-1] == campfire){
   foreGroundmapTiles[xCoord][yCoord] = campfire;
   campFirePlaceArr.push([xCoord,yCoord]);
   invArrItemCount[inv.curItem-1] -= 1;
+}
+if(inv.invantArray[inv.curItem-1] == furnaceOffInv){
+  if(foreGroundmapTiles[xCoord][yCoord] == undefined){
+    if(foreGroundmapTiles[xCoord+1][yCoord] == undefined){
+      if(foreGroundmapTiles[xCoord+1][yCoord+1] == undefined){
+        if(foreGroundmapTiles[xCoord][yCoord+1] == undefined){
+          foreGroundmapTiles[xCoord][yCoord] = furnaceOff;
+        }
+      }
+    }
+  }
+}
+if(inv.invantArray[inv.curItem-1] == hamock){
+  if(foreGroundmapTiles[xCoord-1][yCoord] == tree){
+    if(foreGroundmapTiles[xCoord+2][yCoord] == tree){
+      foreGroundmapTiles[xCoord][yCoord] = hamockL;
+      foreGroundmapTiles[xCoord+1][yCoord] = hamockR;
+    }
+  }
+  else if(foreGroundmapTiles[xCoord+1][yCoord] == tree){
+    if(foreGroundmapTiles[xCoord-2][yCoord] == tree){
+      foreGroundmapTiles[xCoord][yCoord] = hamockR;
+      foreGroundmapTiles[xCoord-1][yCoord] = hamockL;
+    }
+  }
+
+  //invArrItemCount[inv.curItem-1] -= 1;
 }
 
 if(craft.isCraft){

@@ -5,11 +5,14 @@ class player{
     this.hungerVal = 186*2;
     this.health = 186*2;
     this.teleArr = [];
+    this.isLayingDown = false;
+    this.beforeLayDownX;
+    this.beforeLayDownY;
   }
 
 draw(){
   this.hunger();
-  image(playerPic,this.x*50,this.y*50);
+  if(!this.isLayingDown)image(playerPic,this.x*50,this.y*50);
   this.drawTele();
 }
 hunger(){
@@ -176,7 +179,20 @@ playerDigDeadTree(xCoord,yCoord){
     }
 
 }
+playerMineOre(xCoord,yCoord,type){
+  let quantity = floor(random(1,3));
+  console.log("HI")
+    if(inv.curItem ==1){
+        if(foreGroundmapTiles[xCoord][yCoord]==type){
+        foreGroundmapTiles[xCoord][yCoord] = undefined;
+        floorItemArr.push(new grounditems(type,quantity,xCoord,yCoord,10,10));
+      }
 
+
+
+    }
+
+}
 
 
 

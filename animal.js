@@ -14,8 +14,27 @@ class animal{
     this.followTic = 0;
     this.attackDamage = 10;
 
-    if(this.type == 1){
-      let l = floor(random(0,3));
+        if(this.type == 1){
+          let l = floor(random(0,3));
+          if( l == 0){
+          this.picLeft =muffloPicL;
+          this.picRight =muffloPicR;
+        }else if( l == 1){
+        this.picLeft =sheepL;
+        this.picRight =sheepR;
+      }
+      else{
+      this.picLeft =ratL;
+      this.picRight =ratR;
+    }
+    }
+    else if(this.type == 2){
+      this.picLeft =snakePicL;
+      this.picRight =snakePicR;
+    }
+    else if(this.type == 3){
+      let l = floor(random(0,6));
+      console.log(l)
       if( l == 0){
       this.picLeft =muffloPicL;
       this.picRight =muffloPicR;
@@ -23,14 +42,21 @@ class animal{
     this.picLeft =sheepL;
     this.picRight =sheepR;
   }
+  else if( l == 2 || l == 3 || l == 4){
+    if(mapTiles[this.x][this.y] == water1){
+      console.log("HI")
+      this.picLeft =fishL;
+      this.picRight =fishR;
+    }
+    else{
+    this.picLeft =ratL;
+    this.picRight =ratR;
+    }
+}
   else{
   this.picLeft =ratL;
   this.picRight =ratR;
-}
-    }
-    else if(this.type == 2){
-      this.picLeft =snakePicL;
-      this.picRight =snakePicR;
+  }
     }
   }
 
@@ -51,7 +77,21 @@ move(x,y){
   if (timer % 150 < 1){
       let r = random(-1,1);
       let l = random(-1,1);
-      if (abs(r)>abs(l)){
+      if(this.picLeft == fishL){
+        if (abs(r)>abs(l)){
+          if (r > 0 && this.x < 13 && mapTiles[this.x+1][this.y]==water1) {this.x += 1;
+          this.Left = false;}
+          else if (r < 0 && this.x > 0&& mapTiles[this.x-1][this.y]==water1){this.x -= 1;
+            this.Left = true;}
+        }
+        else{
+        if (l > 0 && this.y < 13&&mapTiles[this.x][this.y+1]==water1)this.y += 1;
+        else if (l < 0 && this.y > 0&&mapTiles[this.x][this.y-1]==water1) this.y -=1;
+      }
+      }
+
+
+      else if (abs(r)>abs(l)){
         if (r > 0 && this.x < 13) {this.x += 1;
         this.Left = false;}
         else if (r < 0 && this.x > 0){this.x -= 1;
@@ -61,7 +101,8 @@ move(x,y){
       if (l > 0 && this.y < 13)this.y += 1;
       else if (l < 0 && this.y > 0) this.y -=1;
     }
-  }
+
+}
 }else this.followPlayer();
 }
 }
@@ -78,7 +119,7 @@ followPlayer(){
     this.attack()
   }
   image(following,this.x*50,this.y*50)
-  
+
 
     if(gameClock%40==0){
       if(this.y == player.y) this.followTic = 0;

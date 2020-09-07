@@ -42,7 +42,7 @@ drawInv(){
   if(player.hungerVal<= 0){
     player.hungerVal = 0;
   }
-  else if (player.health <= 186*2) player.health+=1;
+  else if (player.health <= 186*2 && gameClock%25 == 0) player.health+=1;
   rect(893,22,-player.hungerVal/2,15);
 
   this.highlightItem()
@@ -91,6 +91,8 @@ invantItems(){
   this.invantArray[2] = axe1;
   this.invantArray[3] = wandInv;
   this.invantArray[4] = torch;
+  this.invantArray[5] = hamock;
+  this.invantArray[6] = furnaceOffInv;
 
 
 }
@@ -112,8 +114,20 @@ displayItems(){
         offsetY = 9;
 
       }
+      else if(this.invantArray[i] == hamock){
+        offsetY = 10;
+
+      }
+      else if(this.invantArray[i] == coalOre || this.invantArray[i] == ironOre){
+        offsetY = 15;
+
+      }
       else if(this.invantArray[i] == berries){
         offsetX = 4;
+        offsetY = 10;
+      }
+      else if(this.invantArray[i] == furnaceOffInv){
+
         offsetY = 10;
       }
       else if(this.invantArray[i] == tripShroom){
